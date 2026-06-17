@@ -118,29 +118,6 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
 
         .slide-transition { transition: opacity 1.2s ease-in-out; }
-
-        /* Fullscreen PDF Modal Container */
-        #pdf-modal-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            flex-direction: column;
-        }
-
-        #pdf-modal-container.flex {
-            display: flex;
-        }
-
-        #pdf-iframe {
-            flex: 1;
-            width: 100%;
-            border: none;
-        }
     </style>
 </head>
 <body class="selection:bg-violet-500/30 selection:text-white">
@@ -292,7 +269,7 @@
             <!-- ================= CHAPTER SUMMARY SCREEN ================= -->
             <div id="screen-chapter-summary" class="hidden h-full flex flex-col fade-in">
                 <div class="glass-header px-4 py-3 flex items-center justify-between sticky top-0 z-10 border-b border-white/30">
-                    <button onclick="goHome()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center" id="summary-back-btn">
+                    <button onclick="goHome()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
                     <span class="font-bold text-white text-sm tracking-wide drop-shadow-md" id="summary-header-title">פרק</span>
@@ -346,7 +323,7 @@
                 </button>
                 
                 <!-- Link directly to the PDF file -->
-                <a href="htn_guidelines_2026.pdf" target="_blank" class="flex flex-col items-center justify-center w-full h-full text-sky-200/60 hover:text-white gap-1.5 nav-btn transition-all duration-300 relative group" id="nav-pdf">
+                <a href="htn_guidelines_2026.pdf.pdf" target="_blank" class="flex flex-col items-center justify-center w-full h-full text-sky-200/60 hover:text-white gap-1.5 nav-btn transition-all duration-300 relative group" id="nav-pdf">
                     <div class="p-1.5 rounded-xl group-hover:bg-white/10 transition-colors border border-transparent group-hover:border-white/20">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                     </div>
@@ -364,16 +341,46 @@
         </nav>
     </div>
 
-    <!-- ================= PDF MODAL CONTAINER ================= -->
-    <div id="pdf-modal-container">
-        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
-            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
-            <div class="w-10"></div>
+    <!-- ================= PDF MODAL ================= -->
+    <div id="pdf-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-md transition-opacity">
+        <div class="glass-panel w-full max-w-2xl h-[85vh] rounded-[2rem] flex flex-col overflow-hidden shadow-2xl fade-in border-2 border-white/30 bg-slate-900/90">
+            <div class="bg-slate-950/80 text-white px-5 py-4 flex justify-between items-center border-b border-white/20">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-1.5 rounded-lg text-white border border-white/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <span class="font-bold text-sm tracking-wide drop-shadow-md">הנחיות 2026 - עמוד <span id="pdf-page-num" class="text-sky-300 font-extrabold"></span></span>
+                </div>
+                <button onclick="closePdfModal()" class="text-white bg-white/10 hover:bg-white/30 p-1.5 rounded-full border border-white/30 transition-all hover:shadow-[0_0_10px_white]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 flex items-center justify-center p-6 relative">
+                <div class="bg-slate-800 shadow-xl w-full h-full max-w-lg relative p-8 text-center flex flex-col items-center justify-center border border-white/20 rounded-xl">
+                    <div class="absolute top-4 right-4 text-[10px] text-slate-400 font-medium">עמוד <span id="pdf-mock-page"></span></div>
+                    <div class="bg-white/10 border border-white/20 text-white p-4 rounded-full mb-4 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2 drop-shadow-sm">תצוגת מסמך המקור</h3>
+                    <p class="text-slate-300 text-sm mb-6 max-w-[250px]">כאן יוצג רכיב ה-PDF האמיתי בעמוד הרלוונטי.</p>
+                    
+                    <div class="w-full space-y-3 opacity-50">
+                        <div class="h-2.5 w-3/4 bg-white mx-auto rounded-full"></div>
+                        <div class="h-2 w-full bg-sky-200 mx-auto rounded-full"></div>
+                        <div class="h-2 w-5/6 bg-sky-200 mx-auto rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-950/80 border-t border-white/20 px-5 py-3.5 flex justify-between items-center text-sm">
+                <a id="download-pdf-btn" href="htn_guidelines_2026.pdf.pdf" target="_blank" class="text-white font-medium bg-white/10 hover:bg-white/20 border border-white/30 px-3 py-1.5 rounded-lg transition-all">הורד קובץ</a>
+                <div class="flex gap-2 text-white">
+                    <button class="bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-lg border border-white/30 transition-all">הבא &gt;</button>
+                    <button class="bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-lg border border-white/30 transition-all">&lt; קודם</button>
+                </div>
+            </div>
         </div>
-        <iframe id="pdf-iframe" src=""></iframe>
     </div>
 
     <!-- Application Logic -->
@@ -659,7 +666,7 @@
 
             const links = document.getElementById('summary-links');
             if (links) {
-                let pdfLinkUrl = "htn_guidelines_2026.pdf";
+                let pdfLinkUrl = "htn_guidelines_2026.pdf.pdf";
                 
                 // For Chapter 1, set the specific URL fragment to open on page 5
                 if (chapter.id === 1) {
@@ -740,28 +747,29 @@
 
         function goHome() { openScreen('screen-home'); }
 
-        function openPdfModalView(url) {
-            const modal = document.getElementById('pdf-modal-container');
-            const iframe = document.getElementById('pdf-iframe');
+        function openPdfModal(page) {
+            const modal = document.getElementById('pdf-modal');
+            const pageNum = document.getElementById('pdf-page-num');
+            const mockPage = document.getElementById('pdf-mock-page');
             
-            if (iframe) iframe.src = url;
+            if (pageNum) pageNum.innerText = page;
+            if (mockPage) mockPage.innerText = page;
             
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
             }
+            document.body.style.overflow = 'hidden';
         }
 
-        function closePdfModalView() {
-            const modal = document.getElementById('pdf-modal-container');
-            const iframe = document.getElementById('pdf-iframe');
-
+        function closePdfModal() {
+            const modal = document.getElementById('pdf-modal');
             if (modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }
-
-            if (iframe) iframe.src = '';
+            document.body.style.overflow = '';
         }
 
         function sendChatMessage() {
@@ -813,7 +821,7 @@
                         <div class="glass-panel p-4 rounded-2xl rounded-tr-none text-white text-sm leading-relaxed border border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
                             <p>על פי ההנחיות למטופל במצב זה, מומלץ להתחיל <strong>טיפול בשילוב 2 תרופות</strong> כגון ACEi יחד עם CCB. היעד הטיפולי הנדרש הוא להגיע אל מתחת ל-130/80 ממ"כ.</p>
                             <div class="mt-3 flex gap-2">
-                                <button onclick="openPdfModalView('htn_guidelines_2026.pdf#page=55')" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
+                                <button onclick="openPdfModalView('htn_guidelines_2026.pdf.pdf#page=55')" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
                                     מקור: עמ' 55
                                 </button>
