@@ -269,7 +269,7 @@
             <!-- ================= CHAPTER SUMMARY SCREEN ================= -->
             <div id="screen-chapter-summary" class="hidden h-full flex flex-col fade-in">
                 <div class="glass-header px-4 py-3 flex items-center justify-between sticky top-0 z-10 border-b border-white/30">
-                    <button onclick="goHome()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
+                    <button onclick="goHome()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center" id="summary-back-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
                     <span class="font-bold text-white text-sm tracking-wide drop-shadow-md" id="summary-header-title">פרק</span>
@@ -341,48 +341,6 @@
         </nav>
     </div>
 
-    <!-- ================= PDF MODAL ================= -->
-    <div id="pdf-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-md transition-opacity">
-        <div class="glass-panel w-full max-w-2xl h-[85vh] rounded-[2rem] flex flex-col overflow-hidden shadow-2xl fade-in border-2 border-white/30 bg-slate-900/90">
-            <div class="bg-slate-950/80 text-white px-5 py-4 flex justify-between items-center border-b border-white/20">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white/20 p-1.5 rounded-lg text-white border border-white/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                    <span class="font-bold text-sm tracking-wide drop-shadow-md">הנחיות 2026 - עמוד <span id="pdf-page-num" class="text-sky-300 font-extrabold"></span></span>
-                </div>
-                <button onclick="closePdfModal()" class="text-white bg-white/10 hover:bg-white/30 p-1.5 rounded-full border border-white/30 transition-all hover:shadow-[0_0_10px_white]">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-            </div>
-            
-            <div class="flex-1 flex items-center justify-center p-6 relative">
-                <div class="bg-slate-800 shadow-xl w-full h-full max-w-lg relative p-8 text-center flex flex-col items-center justify-center border border-white/20 rounded-xl">
-                    <div class="absolute top-4 right-4 text-[10px] text-slate-400 font-medium">עמוד <span id="pdf-mock-page"></span></div>
-                    <div class="bg-white/10 border border-white/20 text-white p-4 rounded-full mb-4 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 drop-shadow-sm">תצוגת מסמך המקור</h3>
-                    <p class="text-slate-300 text-sm mb-6 max-w-[250px]">כאן יוצג רכיב ה-PDF האמיתי בעמוד הרלוונטי.</p>
-                    
-                    <div class="w-full space-y-3 opacity-50">
-                        <div class="h-2.5 w-3/4 bg-white mx-auto rounded-full"></div>
-                        <div class="h-2 w-full bg-sky-200 mx-auto rounded-full"></div>
-                        <div class="h-2 w-5/6 bg-sky-200 mx-auto rounded-full"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-slate-950/80 border-t border-white/20 px-5 py-3.5 flex justify-between items-center text-sm">
-                <a id="download-pdf-btn" href="יתר לחץ דם סופי 15062026 כולל תיקונים אחרי הדפסה-1_260617_090438.pdf" target="_blank" class="text-white font-medium bg-white/10 hover:bg-white/20 border border-white/30 px-3 py-1.5 rounded-lg transition-all">הורד קובץ</a>
-                <div class="flex gap-2 text-white">
-                    <button class="bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-lg border border-white/30 transition-all">הבא &gt;</button>
-                    <button class="bg-white/10 hover:bg-white/20 px-4 py-1.5 rounded-lg border border-white/30 transition-all">&lt; קודם</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Application Logic -->
     <script>
         // --- CAROUSEL LOGIC ---
@@ -390,17 +348,29 @@
         const totalSlides = 3;
 
         setInterval(() => {
-            document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-100');
-            document.getElementById(`slide-${currentSlide}`).classList.add('opacity-0');
-            document.getElementById(`ind-${currentSlide}`).classList.remove('w-5', 'bg-white', 'shadow-[0_0_10px_white]');
-            document.getElementById(`ind-${currentSlide}`).classList.add('w-1.5', 'bg-white/40');
+            const currentSlideEl = document.getElementById(`slide-${currentSlide}`);
+            if (currentSlideEl) {
+                currentSlideEl.classList.remove('opacity-100');
+                currentSlideEl.classList.add('opacity-0');
+            }
+            const currentInd = document.getElementById(`ind-${currentSlide}`);
+            if (currentInd) {
+                currentInd.classList.remove('w-5', 'bg-white', 'shadow-[0_0_10px_white]');
+                currentInd.classList.add('w-1.5', 'bg-white/40');
+            }
             
             currentSlide = currentSlide >= totalSlides ? 1 : currentSlide + 1;
             
-            document.getElementById(`slide-${currentSlide}`).classList.remove('opacity-0');
-            document.getElementById(`slide-${currentSlide}`).classList.add('opacity-100');
-            document.getElementById(`ind-${currentSlide}`).classList.remove('w-1.5', 'bg-white/40');
-            document.getElementById(`ind-${currentSlide}`).classList.add('w-5', 'bg-white', 'shadow-[0_0_10px_white]');
+            const nextSlideEl = document.getElementById(`slide-${currentSlide}`);
+            if (nextSlideEl) {
+                nextSlideEl.classList.remove('opacity-0');
+                nextSlideEl.classList.add('opacity-100');
+            }
+            const nextInd = document.getElementById(`ind-${currentSlide}`);
+            if (nextInd) {
+                nextInd.classList.remove('w-1.5', 'bg-white/40');
+                nextInd.classList.add('w-5', 'bg-white', 'shadow-[0_0_10px_white]');
+            }
         }, 5000);
 
         // --- CHAPTERS DATA (Upgraded Icons & Expanded Summaries) ---
@@ -591,6 +561,7 @@
 
         function renderToC(dataToRender) {
             const grid = document.getElementById('toc-grid');
+            if (!grid) return;
             let html = '';
             
             if (dataToRender.length === 0) {
@@ -616,7 +587,6 @@
         function initToC() {
             renderToC(chaptersData);
             
-            // Search functionality setup
             const searchInput = document.getElementById('search-input');
             if(searchInput) {
                 searchInput.addEventListener('input', (e) => {
@@ -637,29 +607,45 @@
             const chapter = chaptersData.find(ch => ch.id === chapterId);
             if (!chapter) return;
 
-            document.getElementById('summary-header-title').innerText = `פרק ${chapter.id}`;
-            document.getElementById('summary-subtitle').innerText = `פרק ${chapter.id} במדריך`;
-            document.getElementById('summary-title').innerText = chapter.title;
+            const headerTitle = document.getElementById('summary-header-title');
+            if (headerTitle) headerTitle.innerText = `פרק ${chapter.id}`;
+            
+            const subtitle = document.getElementById('summary-subtitle');
+            if (subtitle) subtitle.innerText = `פרק ${chapter.id} במדריך`;
+            
+            const title = document.getElementById('summary-title');
+            if (title) title.innerText = chapter.title;
             
             const iconContainer = document.getElementById('summary-icon');
-            iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">${chapter.icon}</svg>`;
+            if (iconContainer) iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">${chapter.icon}</svg>`;
             
-            document.getElementById('summary-content').innerHTML = chapter.summary;
+            const content = document.getElementById('summary-content');
+            if (content) content.innerHTML = chapter.summary;
 
-            document.getElementById('summary-links').innerHTML = `
-                <button onclick="openPdfModal(${chapter.page})" class="w-full purple-glass text-white py-3.5 px-4 rounded-2xl transition-all flex justify-between items-center group">
-                    <span class="flex items-center gap-3">
-                        <span class="bg-white/10 text-white group-hover:bg-white/20 p-2.5 rounded-xl transition-all border border-white/50 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.6)]">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+            const links = document.getElementById('summary-links');
+            if (links) {
+                let pdfLinkUrl = "יתר לחץ דם סופי 15062026 כולל תיקונים אחרי הדפסה-1_260617_090438.pdf";
+                
+                // For Chapter 1, set the specific URL fragment to open on page 5
+                if (chapter.id === 1) {
+                    pdfLinkUrl += "#page=5";
+                }
+
+                links.innerHTML = `
+                    <a href="${pdfLinkUrl}" target="_blank" class="w-full purple-glass text-white py-3.5 px-4 rounded-2xl transition-all flex justify-between items-center group">
+                        <span class="flex items-center gap-3">
+                            <span class="bg-white/10 text-white group-hover:bg-white/20 p-2.5 rounded-xl transition-all border border-white/50 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.6)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            </span>
+                            <span class="text-sm font-bold">מעבר למסמך הרשמי</span>
                         </span>
-                        <span class="text-sm font-bold">מעבר למסמך הרשמי</span>
-                    </span>
-                    <span class="text-[11px] bg-white/10 text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 border border-white/30">
-                        עמ' ${chapter.page}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    </span>
-                </button>
-            `;
+                        <span class="text-[11px] bg-white/10 text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 border border-white/30">
+                            עמ' ${chapter.page}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                        </span>
+                    </a>
+                `;
+            }
 
             openScreen('screen-chapter-summary');
         }
@@ -673,25 +659,47 @@
                 }
             });
             
-            document.getElementById(screenId).classList.remove('hidden');
-            document.getElementById(screenId).classList.add('block', 'fade-in');
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.remove('hidden');
+                targetScreen.classList.add('block', 'fade-in');
+            }
             
-            document.getElementById('home-btn').classList.toggle('hidden', screenId === 'screen-home');
+            const homeBtn = document.getElementById('home-btn');
+            if (homeBtn) {
+                if (screenId === 'screen-home') {
+                    homeBtn.classList.add('hidden');
+                } else {
+                    homeBtn.classList.remove('hidden');
+                }
+            }
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-white', 'shadow-[0_0_8px_white]');
-                btn.classList.add('text-sky-200/60');
+                if (btn && btn.classList) {
+                    btn.classList.remove('text-white', 'shadow-[0_0_8px_white]');
+                    btn.classList.add('text-sky-200/60');
+                }
             });
-            document.querySelectorAll('.nav-indicator').forEach(ind => ind.classList.add('hidden'));
+            document.querySelectorAll('.nav-indicator').forEach(ind => {
+                if (ind && ind.classList) ind.classList.add('hidden');
+            });
             
             if(screenId === 'screen-home' || screenId === 'screen-chapter-summary') {
-                document.getElementById('nav-home').classList.add('text-white');
-                document.getElementById('nav-home').classList.remove('text-sky-200/60');
-                document.getElementById('ind-home').classList.remove('hidden');
+                const navHome = document.getElementById('nav-home');
+                if (navHome) {
+                    navHome.classList.add('text-white');
+                    navHome.classList.remove('text-sky-200/60');
+                }
+                const indHome = document.getElementById('ind-home');
+                if (indHome) indHome.classList.remove('hidden');
             } else if(screenId === 'screen-chat') {
-                document.getElementById('nav-chat').classList.add('text-white');
-                document.getElementById('nav-chat').classList.remove('text-sky-200/60');
-                document.getElementById('ind-chat').classList.remove('hidden');
+                const navChat = document.getElementById('nav-chat');
+                if (navChat) {
+                    navChat.classList.add('text-white');
+                    navChat.classList.remove('text-sky-200/60');
+                }
+                const indChat = document.getElementById('ind-chat');
+                if (indChat) indChat.classList.remove('hidden');
             }
         }
 
@@ -699,27 +707,37 @@
 
         function openPdfModal(page) {
             const modal = document.getElementById('pdf-modal');
-            document.getElementById('pdf-page-num').innerText = page;
-            document.getElementById('pdf-mock-page').innerText = page;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            const pageNum = document.getElementById('pdf-page-num');
+            const mockPage = document.getElementById('pdf-mock-page');
+            
+            if (pageNum) pageNum.innerText = page;
+            if (mockPage) mockPage.innerText = page;
+            
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            }
             document.body.style.overflow = 'hidden';
         }
 
         function closePdfModal() {
             const modal = document.getElementById('pdf-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
             document.body.style.overflow = '';
         }
 
         function sendChatMessage() {
             const input = document.getElementById('chat-input');
+            if (!input) return;
             const message = input.value.trim();
             if(!message) return;
 
             const chatContainer = document.getElementById('chat-messages');
+            if (!chatContainer) return;
 
             chatContainer.insertAdjacentHTML('beforeend', `
                 <div class="flex gap-3 max-w-[90%] self-end flex-row-reverse fade-in">
@@ -750,7 +768,9 @@
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
             setTimeout(() => {
-                document.getElementById(typingId).remove();
+                const typingEl = document.getElementById(typingId);
+                if (typingEl) typingEl.remove();
+                
                 chatContainer.insertAdjacentHTML('beforeend', `
                     <div class="flex gap-3 max-w-[95%] fade-in mt-2">
                         <div class="w-8 h-8 rounded-full lilac-btn flex items-center justify-center shrink-0 border-white/60">
@@ -771,12 +791,15 @@
             }, 1500);
         }
 
-        document.getElementById('chat-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendChatMessage();
-            }
-        });
+        const chatInput = document.getElementById('chat-input');
+        if (chatInput) {
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+        }
     </script>
 </body>
 </html>
