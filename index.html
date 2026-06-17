@@ -118,6 +118,29 @@
         ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
 
         .slide-transition { transition: opacity 1.2s ease-in-out; }
+
+        /* Fullscreen PDF Modal Container */
+        #pdf-modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+        }
+
+        #pdf-modal-container.flex {
+            display: flex;
+        }
+
+        #pdf-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body class="selection:bg-violet-500/30 selection:text-white">
@@ -339,6 +362,18 @@
                 </button>
             </div>
         </nav>
+    </div>
+
+    <!-- ================= PDF MODAL CONTAINER ================= -->
+    <div id="pdf-modal-container">
+        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
+            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
+            <div class="w-10"></div>
+        </div>
+        <iframe id="pdf-iframe" src=""></iframe>
     </div>
 
     <!-- Application Logic -->
@@ -632,7 +667,7 @@
                 }
 
                 links.innerHTML = `
-                    <a href="${pdfLinkUrl}" target="_blank" class="w-full purple-glass text-white py-3.5 px-4 rounded-2xl transition-all flex justify-between items-center group">
+                    <button onclick="openPdfModalView('${pdfLinkUrl}')" class="w-full purple-glass text-white py-3.5 px-4 rounded-2xl transition-all flex justify-between items-center group">
                         <span class="flex items-center gap-3">
                             <span class="bg-white/10 text-white group-hover:bg-white/20 p-2.5 rounded-xl transition-all border border-white/50 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.6)]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -643,7 +678,7 @@
                             עמ' ${chapter.page}
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                         </span>
-                    </a>
+                    </button>
                 `;
             }
 
@@ -705,29 +740,28 @@
 
         function goHome() { openScreen('screen-home'); }
 
-        function openPdfModal(page) {
-            const modal = document.getElementById('pdf-modal');
-            const pageNum = document.getElementById('pdf-page-num');
-            const mockPage = document.getElementById('pdf-mock-page');
+        function openPdfModalView(url) {
+            const modal = document.getElementById('pdf-modal-container');
+            const iframe = document.getElementById('pdf-iframe');
             
-            if (pageNum) pageNum.innerText = page;
-            if (mockPage) mockPage.innerText = page;
+            if (iframe) iframe.src = url;
             
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
-                setTimeout(() => modal.classList.remove('opacity-0'), 10);
             }
-            document.body.style.overflow = 'hidden';
         }
 
-        function closePdfModal() {
-            const modal = document.getElementById('pdf-modal');
+        function closePdfModalView() {
+            const modal = document.getElementById('pdf-modal-container');
+            const iframe = document.getElementById('pdf-iframe');
+
             if (modal) {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
             }
-            document.body.style.overflow = '';
+
+            if (iframe) iframe.src = '';
         }
 
         function sendChatMessage() {
@@ -779,7 +813,7 @@
                         <div class="glass-panel p-4 rounded-2xl rounded-tr-none text-white text-sm leading-relaxed border border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
                             <p>על פי ההנחיות למטופל במצב זה, מומלץ להתחיל <strong>טיפול בשילוב 2 תרופות</strong> כגון ACEi יחד עם CCB. היעד הטיפולי הנדרש הוא להגיע אל מתחת ל-130/80 ממ"כ.</p>
                             <div class="mt-3 flex gap-2">
-                                <button onclick="openPdfModal(55)" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
+                                <button onclick="openPdfModalView('יתר לחץ דם סופי 15062026 כולל תיקונים אחרי הדפסה-1_260617_090438.pdf#page=55')" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
                                     מקור: עמ' 55
                                 </button>
