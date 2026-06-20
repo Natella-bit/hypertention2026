@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>יתר לחץ דם בישראל - אבחנה, טיפול ואיזון</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,7 +21,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap');
         
-        body {
+        body, html {
             font-family: 'Heebo', sans-serif;
             /* Metallic Blue Background */
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #172554 70%, #020617 100%);
@@ -31,9 +31,10 @@
             -webkit-tap-highlight-color: transparent;
             background-attachment: fixed;
             margin: 0;
-            padding: 12px;
+            padding: 0;
             box-sizing: border-box;
-            height: 100dvh; /* Ensures full height visibility on mobile browsers */
+            height: 100%;
+            overflow: hidden; /* Prevent body scroll, handle scroll in containers */
         }
 
         /* Container for the border effect */
@@ -46,6 +47,12 @@
             overflow: hidden;
             box-shadow: 0 0 25px rgba(125, 211, 252, 0.15);
             background: rgba(0, 0, 0, 0.2);
+            position: relative; /* Essential for absolute positioning of nav */
+        }
+
+        /* Responsive padding for container */
+        @media (min-width: 768px) {
+            body { padding: 12px; }
         }
 
         @keyframes shimmer {
@@ -64,7 +71,7 @@
         }
         
         .glass-header {
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.85); /* Slightly less transparent for bottom nav */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -142,11 +149,30 @@
             border: none;
         }
         
+        /* Layout fix to prevent content hiding behind bottom nav */
+        .content-area {
+            flex-grow: 1;
+            overflow-y: auto;
+            /* Padding bottom equal to nav height to ensure content isn't hidden */
+            padding-bottom: 5rem; 
+        }
+
+        /* Bottom Nav fixed positioning within container */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         /* Layout for Desktop */
         @media (min-width: 768px) {
             .main-layout {
                 display: flex;
                 height: 100%;
+                padding-bottom: 0; /* No bottom padding needed on desktop if nav is elsewhere */
             }
             .sidebar {
                 width: 300px;
@@ -156,8 +182,11 @@
                 background: rgba(15, 23, 42, 0.6);
             }
             .content-area {
-                flex-grow: 1;
-                overflow-y: auto;
+                padding-bottom: 2rem; /* Less padding needed when bottom nav is hidden on desktop */
+            }
+            /* Hide mobile bottom nav on desktop */
+            .bottom-nav {
+                display: none;
             }
         }
     </style>
@@ -188,7 +217,7 @@
         </header>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-hidden relative main-layout pb-[4.5rem]">
+        <main class="flex-1 overflow-hidden relative main-layout">
             
             <!-- Sidebar for Desktop -->
             <aside class="sidebar hidden md:flex flex-col h-full pt-4 px-4 pb-20">
@@ -208,7 +237,7 @@
             </aside>
 
             <!-- ================= HOME SCREEN ================= -->
-            <div id="screen-home" class="content-area flex flex-col gap-0 fade-in block pb-6 h-full overflow-y-auto">
+            <div id="screen-home" class="content-area flex flex-col gap-0 fade-in block">
                 
                 <!-- Hero / Auto Image Carousel Area -->
                 <div class="px-4 pt-4 mb-3">
@@ -283,7 +312,7 @@
                     </div>
 
                     <!-- Credits -->
-                    <div class="mt-10 mb-4 text-center flex flex-col items-center justify-center border-t border-white/20 pt-6">
+                    <div class="mt-10 pb-6 text-center flex flex-col items-center justify-center border-t border-white/20 pt-6">
                         <p class="text-sm font-extrabold text-white drop-shadow-sm">ההסתדרות הרפואית בישראל</p>
                         <p class="text-xs font-medium text-slate-300 mt-1">המכון לאיכות ברפואה</p>
                     </div>
@@ -332,9 +361,9 @@
                     <div class="w-10"></div>
                 </div>
                 
-                <div class="flex-1 overflow-y-auto pb-24">
+                <div class="flex-1 overflow-y-auto pb-6">
                     <div class="px-5 pt-6 relative z-10">
-                        <div class="flex flex-col gap-4 mb-8 items-center text-center">
+                        <div class="flex flex-col gap-4 mb-6 items-center text-center">
                             <div id="summary-icon" class="w-16 h-16 rounded-2xl flex items-center justify-center lilac-btn border-white/60 shadow-[0_0_20px_rgba(255,255,255,0.4)]"></div>
                             <div>
                                 <span id="summary-subtitle" class="text-[10px] font-bold tracking-widest block mb-1 text-sky-200 uppercase drop-shadow-sm"></span>
@@ -351,15 +380,11 @@
                                 תוכן והנחיות קליניות
                             </h3>
                             <div id="summary-content" class="text-slate-100 text-sm leading-relaxed space-y-4"></div>
-                        </div>
-                        
-                        <!-- PDF Deep Links -->
-                        <div>
-                            <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2 px-1 drop-shadow-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-sky-300"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                                הפניות מהירות למסמך המקור
-                            </h3>
-                            <div id="summary-links" class="flex flex-col gap-3"></div>
+                            
+                            <!-- PDF Link directly below summary -->
+                            <div class="mt-6 pt-4 border-t border-white/20" id="summary-links">
+                                <!-- Link injected via JS -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -368,7 +393,7 @@
         </main>
 
         <!-- ================= BOTTOM NAVIGATION ================= -->
-        <nav class="absolute bottom-0 w-full glass-header border-t border-white/20 shadow-[0_-10px_30px_rgba(0,0,0,0.6)] z-40 shrink-0 md:rounded-b-[1.5rem] md:rounded-bl-[1.5rem]">
+        <nav class="bottom-nav glass-header md:rounded-b-[1.5rem] md:rounded-bl-[1.5rem]">
             <div class="flex justify-around items-center h-[4.5rem] px-2 relative">
                 <button onclick="openScreen('screen-home')" class="flex flex-col items-center justify-center w-full h-full text-white gap-1.5 nav-btn transition-all duration-300 relative group" id="nav-home">
                     <div class="p-1.5 rounded-xl group-hover:bg-white/10 transition-colors border border-transparent group-hover:border-white/20">
@@ -395,18 +420,6 @@
                 </button>
             </div>
         </nav>
-    </div>
-
-    <!-- ================= PDF MODAL CONTAINER ================= -->
-    <div id="pdf-modal-container">
-        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
-            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
-            <div class="w-10"></div>
-        </div>
-        <iframe id="pdf-iframe" src=""></iframe>
     </div>
 
     <!-- Application Logic -->
@@ -446,7 +459,6 @@
             { 
                 id: 1, 
                 title: "יתר לחץ דם - הגדרה, אבחנה וצורות מדידה", 
-                page: 5,
                 pageDisplay: "5-13",
                 pdfFile: "יתר ל.ד. פרק 1 הגדרה, אבחנה וצורות מדידה עמ' 5-13.pdf",
                 summary: `
@@ -464,7 +476,6 @@
             { 
                 id: 2, 
                 title: "הנחיות לניהול חולה עם יתר לחץ דם ראשוני ושניוני", 
-                page: 14,
                 pageDisplay: "14-19",
                 pdfFile: "יתר ל.ד. פרק 2 - יתר ל.ד. ראשוני ושניוני, עמ' 14-19.pdf",
                 summary: `
@@ -483,7 +494,6 @@
             { 
                 id: 3, 
                 title: "נזק לאברי מטרה מיתר לחץ דם: כליות ועיניים", 
-                page: 20,
                 pageDisplay: "20-25",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -508,7 +518,6 @@
             { 
                 id: 4, 
                 title: "אורחות חיים ופעילות גופנית", 
-                page: 26,
                 pageDisplay: "26-39",
                 pdfFile: "יתר ל.ד. פרק 4 - אורחות חיים ופעילות גופנית , עמ' 26-39.pdf",
                 summary: `
@@ -535,7 +544,6 @@
             { 
                 id: 5, 
                 title: "תזונה ולחץ דם", 
-                page: 40,
                 pageDisplay: "40-48",
                 pdfFile: "יתר ל.ד. פרק 5 עמ' 40-48.pdf",
                 summary: `
@@ -555,7 +563,6 @@
             { 
                 id: 6, 
                 title: "מתי יש להתחיל טיפול תרופתי להורדת לחץ הדם, ומהם יעדי הטיפול", 
-                page: 49,
                 pageDisplay: "49-53",
                 pdfFile: "יתר ל.ד. פרק 6 - התחלת הטיפול ויעד הטיפול, עמ' 49-53.pdf",
                 summary: `
@@ -579,7 +586,6 @@
             { 
                 id: 7, 
                 title: "טיפול ביתר לחץ דם - מפתוגנזה לפרמקולוגיה", 
-                page: 54,
                 pageDisplay: "54-60",
                 pdfFile: "יתר ל.ד. פרק 7 - טיפול תרופתי, עמ' 54-60.pdf",
                 summary: `
@@ -599,7 +605,6 @@
             { 
                 id: 8, 
                 title: "טיפול פארמקולוגי לאיזון יתר לחץ דם", 
-                page: 61,
                 pageDisplay: "61-81",
                 pdfFile: "יתר ל.ד. פרק 8 - טיפול פרמקולוגי, עמ' 61-81.pdf",
                 summary: `
@@ -625,7 +630,6 @@
             { 
                 id: 9, 
                 title: "טיפול ביתר לחץ דם עמיד ויל\"ד עקיש (רפרקטורי)", 
-                page: 82,
                 pageDisplay: "82-85",
                 pdfFile: "יתר ל.ד. פרק 9 - טיפול בל.ד. עמיד, עמ' 81-85.pdf",
                 summary: `
@@ -645,7 +649,6 @@
             { 
                 id: 10, 
                 title: "מעקב אחר חולה עם יתר לחץ דם מטופל", 
-                page: 86,
                 pageDisplay: "86-90",
                 pdfFile: "יתר ל.ד. פרק 10 - מעקב, עמ' 86-90.pdf",
                 summary: `
@@ -664,7 +667,6 @@
             { 
                 id: 11, 
                 title: "טיפול ביתר לחץ דם באוכלוסייה מבוגרת", 
-                page: 91,
                 pageDisplay: "91-100",
                 pdfFile: "יתר ל.ד. פרק 11 - אוכלוסיה מבוגרת, עמ' 91-100.pdf",
                 summary: `
@@ -683,7 +685,6 @@
             { 
                 id: 12, 
                 title: "יתר לחץ דם בילדים ומתבגרים", 
-                page: 101,
                 pageDisplay: "101-137",
                 pdfFile: "יתר ל.ד. בילדים מתבגרים פרק 12, עמ' 101-137.pdf",
                 summary: `
@@ -702,7 +703,6 @@
             { 
                 id: 13, 
                 title: "יתר לחץ דם במבוגרים עם מחלת כליות כרונית", 
-                page: 138,
                 pageDisplay: "138-147",
                 pdfFile: "יתר ל.ד. פרק 13 - מחלת כליות, עמ' 138-147.pdf",
                 summary: `
@@ -720,7 +720,6 @@
             { 
                 id: 14, 
                 title: "יתר לחץ דם במטופלי דיאליזה ובמושתלי כליה", 
-                page: 148,
                 pageDisplay: "148-152",
                 pdfFile: "יתר ל.ד. פרק 14 - מטופלי דיאליזה, עמ'148-152.pdf",
                 summary: `
@@ -738,7 +737,6 @@
             { 
                 id: 15, 
                 title: "יתר לחץ דם בשל מחלה בעורקי הכליות", 
-                page: 153,
                 pageDisplay: "153-158",
                 pdfFile: "יתר ל.ד. פרק 15- מחלה בעורקי כליות, עמ'153-158.pdf",
                 summary: `
@@ -756,7 +754,6 @@
             { 
                 id: 16, 
                 title: "יתר לחץ דם אנדוקריני", 
-                page: 159,
                 pageDisplay: "159-167",
                 pdfFile: "יתר ל.ד. פרק 16 - יתר לחץ דם אנדוקריני, עמ' 159-167.pdf",
                 summary: `
@@ -774,7 +771,6 @@
             { 
                 id: 17, 
                 title: "היפאלדוסטרוניזם ראשוני", 
-                page: 168,
                 pageDisplay: "168-174",
                 pdfFile: "יתר ל.ד. פרק 17 - היפראלדוסטרוניזם ראשוני, עמ'168-174.pdf",
                 summary: `
@@ -792,7 +788,6 @@
             { 
                 id: 18, 
                 title: "תרופות הגורמות ליתר לחץ דם", 
-                page: 175,
                 pageDisplay: "175-182",
                 pdfFile: "יתר ל.ד. פרק 18 - תרופות גורמות ללחץ דם, עמ' 175-182.pdf",
                 summary: `
@@ -812,7 +807,6 @@
             { 
                 id: 19, 
                 title: "הטיפול ביתר לחץ דם בבית חולים ובמצבי חירום של יתר לחץ דם", 
-                page: 183,
                 pageDisplay: "183-196",
                 pdfFile: "יתר ל.ד. פרק 19- מצבי חירום, עמ'183-196.pdf",
                 summary: `
@@ -830,7 +824,6 @@
             { 
                 id: 20, 
                 title: "יתר לחץ דם בסוכרת", 
-                page: 197,
                 pageDisplay: "197-206",
                 pdfFile: "יתר ל.ד. פרק 20 - יתר ל.ד.. בסוכרת, עמ'197-206.pdf",
                 summary: `
@@ -848,7 +841,6 @@
             { 
                 id: 21, 
                 title: "השפעת מחלת ההשמנה והטיפול בה על יתר לחץ דם", 
-                page: 207,
                 pageDisplay: "207-213",
                 pdfFile: "יתר ל.ד. פרק 21, עמ'207-213.pdf",
                 summary: `
@@ -865,7 +857,6 @@
             { 
                 id: 22, 
                 title: "לחץ דם והמוח", 
-                page: 214,
                 pageDisplay: "214-217",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -882,8 +873,7 @@
             },
             { 
                 id: 23, 
-                title: "יתר לחץ דם, הלב וכלי הדם", 
-                page: 218,
+                title: "יתר לחץ דם, הלב וכלי בדם", 
                 pageDisplay: "218-227",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -901,7 +891,6 @@
             { 
                 id: 24, 
                 title: "השפעות סביבתיות ותעסוקתיות על לחץ דם", 
-                page: 228,
                 pageDisplay: "228-235",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -919,7 +908,6 @@
             { 
                 id: 25, 
                 title: "טכנולוגיות חדשות לאבחון וטיפול ביתר לחץ דם", 
-                page: 236,
                 pageDisplay: "236-244",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -937,7 +925,6 @@
             { 
                 id: 26, 
                 title: "יתר לחץ דם בהיריון", 
-                page: 245,
                 pageDisplay: "245-251",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -956,7 +943,6 @@
             { 
                 id: 27, 
                 title: "יתר לחץ דם בנשים", 
-                page: 252,
                 pageDisplay: "252-254",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -974,7 +960,6 @@
             { 
                 id: 28, 
                 title: "יתר לחץ דם ומחלות ממאירות", 
-                page: 255,
                 pageDisplay: "255-262",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -992,7 +977,6 @@
             { 
                 id: 29, 
                 title: "עקה, חרדה ויתר לחץ דם", 
-                page: 263,
                 pageDisplay: "263-276",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
@@ -1010,7 +994,6 @@
             { 
                 id: 30, 
                 title: "תת לחץ דם", 
-                page: 277,
                 pageDisplay: "277-288",
                 pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
