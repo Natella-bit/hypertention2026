@@ -397,6 +397,18 @@
         </nav>
     </div>
 
+    <!-- ================= PDF MODAL CONTAINER ================= -->
+    <div id="pdf-modal-container">
+        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
+            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
+            <div class="w-10"></div>
+        </div>
+        <iframe id="pdf-iframe" src=""></iframe>
+    </div>
+
     <!-- Application Logic -->
     <script>
         // --- CAROUSEL LOGIC ---
@@ -761,7 +773,7 @@
             },
             { 
                 id: 17, 
-                title: "היפראלדוסטרוניזם ראשוני", 
+                title: "היפאלדוסטרוניזם ראשוני", 
                 page: 168,
                 pageDisplay: "168-174",
                 pdfFile: "יתר ל.ד. פרק 17 - היפראלדוסטרוניזם ראשוני, עמ'168-174.pdf",
@@ -1093,8 +1105,7 @@
                 // הבטחה שקובץ ברירת מחדל ישמש במידה ולא הוגדר קובץ ספציפי
                 let pdfLinkUrl = chapter.pdfFile ? chapter.pdfFile : "htn_guidelines_2026.pdf.pdf";
                 
-                // חיבור מספר העמוד לקישור ה-PDF באופן דינמי
-                pdfLinkUrl += "#page=" + chapter.page;
+                // הוסר: הוספת מספר העמוד לקישור (pdfLinkUrl += "#page=" + chapter.page;) כדי שיפתח תמיד מההתחלה
 
                 // טקסט תצוגת העמוד בכפתור
                 let pageText = chapter.pageDisplay ? chapter.pageDisplay : chapter.page;
@@ -1222,7 +1233,7 @@
                         <div class="glass-panel p-4 rounded-2xl rounded-tr-none text-white text-sm leading-relaxed border border-white/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
                             <p>על פי ההנחיות למטופל במצב זה, מומלץ להתחיל <strong>טיפול בשילוב 2 תרופות</strong> כגון ACEi יחד עם CCB. היעד הטיפולי הנדרש הוא להגיע אל מתחת ל-130/80 ממ"כ.</p>
                             <div class="mt-3 flex gap-2">
-                                <a href="htn_guidelines_2026.pdf.pdf#page=55" target="_blank" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
+                                <a href="htn_guidelines_2026.pdf.pdf" target="_blank" class="inline-flex items-center gap-1 bg-white/20 text-white rounded-lg px-2.5 py-1 text-[11px] font-bold hover:bg-white/30 border border-white/40 hover:shadow-[0_0_10px_rgba(255,255,255,0.4)] transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
                                     מקור: עמ' 55
                                 </a>
