@@ -167,6 +167,16 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* Mobile specific styling for scrolling TOC */
+        #toc-mobile-container {
+             /* Adjust height calculation so the grid fits and scrolls within the remaining space above footer */
+            max-height: calc(100vh - 380px); /* Tweak the 380px depending on hero image and header heights */
+            overflow-y: auto;
+            padding-bottom: 2rem;
+            /* Add some margin/padding so scrollbar doesn't cut into glass effect */
+            padding-right: 0.5rem; 
+        }
+
         /* Layout for Desktop */
         @media (min-width: 768px) {
             .main-layout {
@@ -187,6 +197,10 @@
             /* Hide mobile bottom nav on desktop */
             .bottom-nav {
                 display: none;
+            }
+             #toc-mobile-container {
+                max-height: none; /* remove max height on desktop as we have a sidebar */
+                overflow-y: visible;
             }
         }
     </style>
@@ -240,15 +254,15 @@
             <div id="screen-home" class="content-area flex flex-col gap-0 fade-in block">
                 
                 <!-- Hero / Auto Image Carousel Area -->
-                <div class="px-4 pt-4 mb-3">
-                    <div class="relative w-full h-52 md:h-64 rounded-[2rem] overflow-hidden glass-panel border-2 border-white/30">
+                <div class="px-4 pt-4 mb-3 shrink-0">
+                    <div class="relative w-full h-40 md:h-64 rounded-[2rem] overflow-hidden glass-panel border-2 border-white/30">
                         <!-- Slide 1 -->
                         <div id="slide-1" class="absolute inset-0 slide-transition opacity-100 z-10">
                             <img src="htn7.png" alt="Doctor" class="w-full h-full object-cover mix-blend-overlay opacity-60" onerror="this.src='https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80'" />
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-[#0b0f19]/50 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span class="purple-glass text-white px-3 py-1 rounded-full text-[10px] font-bold w-max mb-2">חדשנות בטיפול</span>
                                 <h2 class="text-xl font-bold leading-tight text-white drop-shadow-md">איזון לחץ דם מותאם אישית</h2>
-                                <p class="text-xs text-sky-100 mt-1">גישה ממוקדת מטופל על פי הנחיות 2026</p>
+                                <p class="text-xs text-sky-100 mt-1 hidden sm:block">גישה ממוקדת מטופל על פי הנחיות 2026</p>
                             </div>
                         </div>
                         <!-- Slide 2 -->
@@ -257,7 +271,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-[#0b0f19]/50 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span class="purple-glass text-white px-3 py-1 rounded-full text-[10px] font-bold w-max mb-2">ניטור מתקדם</span>
                                 <h2 class="text-xl font-bold leading-tight text-white drop-shadow-md">חשיבות הניטור החוץ-מרפאתי</h2>
-                                <p class="text-xs text-sky-100 mt-1">הדגשת בדיקות ביתיות והולטר ל"ד</p>
+                                <p class="text-xs text-sky-100 mt-1 hidden sm:block">הדגשת בדיקות ביתיות והולטר ל"ד</p>
                             </div>
                         </div>
                         <!-- Slide 3 -->
@@ -266,7 +280,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-[#0b0f19]/50 to-transparent flex flex-col justify-end p-5 text-white">
                                 <span class="purple-glass text-white px-3 py-1 rounded-full text-[10px] font-bold w-max mb-2">כלים לרופא</span>
                                 <h2 class="text-xl font-bold leading-tight text-white drop-shadow-md">קבלת החלטות מבוססת AI</h2>
-                                <p class="text-xs text-sky-100 mt-1">פרוטוקולים נגישים וצ'אטבוט קליני חכם</p>
+                                <p class="text-xs text-sky-100 mt-1 hidden sm:block">פרוטוקולים נגישים וצ'אטבוט קליני חכם</p>
                             </div>
                         </div>
                         
@@ -279,44 +293,52 @@
                     </div>
                 </div>
 
-                <div class="px-5 mt-4 md:hidden">
+                <div class="px-5 mt-2 md:hidden shrink-0">
                     <!-- Search Bar (Mobile Only) -->
-                    <div class="glass-panel rounded-2xl p-3 flex items-center gap-3 mb-5 border-white/40 focus-within:border-white focus-within:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all bg-white/5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <div class="glass-panel rounded-2xl p-2 flex items-center gap-3 mb-3 border-white/40 focus-within:border-white focus-within:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all bg-white/5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                         <input type="text" id="search-input-mobile" placeholder="חיפוש מהיר בהנחיות..." class="bg-transparent border-none outline-none text-white placeholder-slate-300 w-full text-sm font-medium">
                     </div>
                 </div>
 
-                <div class="px-5 mt-4">
+                <div class="px-5 mt-1 shrink-0">
                     <!-- Warning Banner (Golden Glow) -->
-                    <div class="bg-yellow-500/20 backdrop-blur-md border-r-4 border-r-yellow-400 p-3 rounded-2xl flex gap-3 items-center mb-6 shadow-[0_0_15px_rgba(250,204,21,0.4)] border-y border-l border-yellow-400/30 transition-all hover:shadow-[0_0_25px_rgba(250,204,21,0.6)]">
-                        <div class="bg-yellow-400/20 text-yellow-300 p-2 rounded-xl shrink-0 border border-yellow-400/40 shadow-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <div class="bg-yellow-500/20 backdrop-blur-md border-r-4 border-r-yellow-400 p-2.5 rounded-2xl flex gap-3 items-center mb-4 shadow-[0_0_15px_rgba(250,204,21,0.4)] border-y border-l border-yellow-400/30 transition-all hover:shadow-[0_0_25px_rgba(250,204,21,0.6)]">
+                        <div class="bg-yellow-400/20 text-yellow-300 p-1.5 rounded-xl shrink-0 border border-yellow-400/40 shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                         </div>
-                        <div class="text-xs font-medium leading-tight text-white drop-shadow-md">
+                        <div class="text-[11px] font-medium leading-tight text-white drop-shadow-md">
                             מערכת מאובטחת תומכת החלטה. <strong class="text-yellow-300 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]">אין להזין פרטים מזהים (PHI).</strong>
                         </div>
                     </div>
 
                     <!-- Table of Contents Header (Mobile Only) -->
-                    <div class="md:hidden flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                    <div class="md:hidden flex items-center justify-between mb-3">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2 drop-shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
                             תוכן עניינים (30 פרקים)
                         </h3>
                     </div>
-                    
-                    <!-- Table of Contents Grid (Mobile Only) -->
-                    <div class="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="toc-grid-mobile">
-                        <!-- Chapters injected via JS -->
-                    </div>
+                </div>
 
-                    <!-- Credits -->
-                    <div class="mt-10 pb-6 text-center flex flex-col items-center justify-center border-t border-white/20 pt-6">
-                        <p class="text-sm font-extrabold text-white drop-shadow-sm">ההסתדרות הרפואית בישראל</p>
-                        <p class="text-xs font-medium text-slate-300 mt-1">המכון לאיכות ברפואה</p>
+                <!-- Table of Contents Grid (Mobile Only) - THIS IS THE SCROLLABLE PART -->
+                <div class="px-5 w-full">
+                    <div id="toc-mobile-container" class="md:hidden w-full">
+                        <div class="grid grid-cols-1 gap-2.5" id="toc-grid-mobile">
+                            <!-- Chapters injected via JS -->
+                        </div>
+                        
+                        <!-- Credits -->
+                        <div class="mt-8 pb-6 text-center flex flex-col items-center justify-center border-t border-white/20 pt-6">
+                            <p class="text-sm font-extrabold text-white drop-shadow-sm">ההסתדרות הרפואית בישראל</p>
+                            <p class="text-xs font-medium text-slate-300 mt-1">המכון לאיכות ברפואה</p>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Empty div to push content above the fixed nav on desktop -->
+                <div class="hidden md:block h-20"></div>
+
             </div>
 
             <!-- ================= CHATBOT SCREEN ================= -->
@@ -420,6 +442,18 @@
                 </button>
             </div>
         </nav>
+    </div>
+
+    <!-- ================= PDF MODAL CONTAINER ================= -->
+    <div id="pdf-modal-container">
+        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
+            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
+            <div class="w-10"></div>
+        </div>
+        <iframe id="pdf-iframe" src=""></iframe>
     </div>
 
     <!-- Application Logic -->
@@ -1088,8 +1122,6 @@
                 // הבטחה שקובץ ברירת מחדל ישמש במידה ולא הוגדר קובץ ספציפי
                 let pdfLinkUrl = chapter.pdfFile ? chapter.pdfFile : "htn_guidelines_2026.pdf.pdf";
                 
-                // הוסר: הוספת מספר העמוד לקישור (pdfLinkUrl += "#page=" + chapter.page;) כדי שיפתח תמיד מההתחלה
-
                 // טקסט תצוגת העמוד בכפתור
                 let pageText = chapter.pageDisplay ? chapter.pageDisplay : chapter.page;
 
