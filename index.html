@@ -141,6 +141,25 @@
             width: 100%;
             border: none;
         }
+        
+        /* Layout for Desktop */
+        @media (min-width: 768px) {
+            .main-layout {
+                display: flex;
+                height: 100%;
+            }
+            .sidebar {
+                width: 300px;
+                flex-shrink: 0;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+                overflow-y: auto;
+                background: rgba(15, 23, 42, 0.6);
+            }
+            .content-area {
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+        }
     </style>
 </head>
 <body class="selection:bg-violet-500/30 selection:text-white">
@@ -165,19 +184,31 @@
                         <p class="text-[10px] text-sky-200 font-medium">אבחנה, טיפול ואיזון 2026</p>
                     </div>
                 </div>
-                
-                <!-- Logo Area (Same line as title) -->
-                <div class="flex items-center justify-end">
-                    <img src="logo.jpeg" alt="עמותת אחיות מומחיות בסוכרת אמל״י" class="h-9 md:h-11 object-contain drop-shadow-[0_2px_10px_rgba(255,255,255,0.2)] opacity-95 bg-white/10 rounded-lg p-1 border border-white/20">
-                </div>
             </div>
         </header>
 
         <!-- Main Content Area -->
-        <main class="flex-1 overflow-y-auto relative pb-6">
+        <main class="flex-1 overflow-hidden relative main-layout pb-[4.5rem]">
             
+            <!-- Sidebar for Desktop -->
+            <aside class="sidebar hidden md:flex flex-col h-full pt-4 px-4 pb-20">
+                <div class="glass-panel rounded-2xl p-3 flex items-center gap-3 mb-5 border-white/40 focus-within:border-white focus-within:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all bg-white/5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="search-input-sidebar" placeholder="חיפוש מהיר בהנחיות..." class="bg-transparent border-none outline-none text-white placeholder-slate-300 w-full text-sm font-medium">
+                </div>
+                
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md mb-4 px-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                    תוכן עניינים (30 פרקים)
+                </h3>
+                
+                <div class="flex flex-col gap-2 overflow-y-auto pr-2 pb-10" id="sidebar-toc">
+                    <!-- Chapters injected via JS -->
+                </div>
+            </aside>
+
             <!-- ================= HOME SCREEN ================= -->
-            <div id="screen-home" class="flex flex-col gap-0 fade-in block pb-6">
+            <div id="screen-home" class="content-area flex flex-col gap-0 fade-in block pb-6 h-full overflow-y-auto">
                 
                 <!-- Hero / Auto Image Carousel Area -->
                 <div class="px-4 pt-4 mb-3">
@@ -219,13 +250,15 @@
                     </div>
                 </div>
 
-                <div class="px-5 mt-4">
-                    <!-- Search Bar -->
+                <div class="px-5 mt-4 md:hidden">
+                    <!-- Search Bar (Mobile Only) -->
                     <div class="glass-panel rounded-2xl p-3 flex items-center gap-3 mb-5 border-white/40 focus-within:border-white focus-within:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all bg-white/5">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <input type="text" id="search-input" placeholder="חיפוש מהיר בהנחיות..." class="bg-transparent border-none outline-none text-white placeholder-slate-300 w-full text-sm font-medium">
+                        <input type="text" id="search-input-mobile" placeholder="חיפוש מהיר בהנחיות..." class="bg-transparent border-none outline-none text-white placeholder-slate-300 w-full text-sm font-medium">
                     </div>
+                </div>
 
+                <div class="px-5 mt-4">
                     <!-- Warning Banner (Golden Glow) -->
                     <div class="bg-yellow-500/20 backdrop-blur-md border-r-4 border-r-yellow-400 p-3 rounded-2xl flex gap-3 items-center mb-6 shadow-[0_0_15px_rgba(250,204,21,0.4)] border-y border-l border-yellow-400/30 transition-all hover:shadow-[0_0_25px_rgba(250,204,21,0.6)]">
                         <div class="bg-yellow-400/20 text-yellow-300 p-2 rounded-xl shrink-0 border border-yellow-400/40 shadow-sm">
@@ -236,16 +269,16 @@
                         </div>
                     </div>
 
-                    <!-- Table of Contents Header -->
-                    <div class="flex items-center justify-between mb-4">
+                    <!-- Table of Contents Header (Mobile Only) -->
+                    <div class="md:hidden flex items-center justify-between mb-4">
                         <h3 class="text-lg font-bold text-white flex items-center gap-2 drop-shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-                            תוכן עניינים (11 פרקים)
+                            תוכן עניינים (30 פרקים)
                         </h3>
                     </div>
                     
-                    <!-- Table of Contents Grid -->
-                    <div class="grid grid-cols-2 gap-3.5" id="toc-grid">
+                    <!-- Table of Contents Grid (Mobile Only) -->
+                    <div class="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="toc-grid-mobile">
                         <!-- Chapters injected via JS -->
                     </div>
 
@@ -258,7 +291,7 @@
             </div>
 
             <!-- ================= CHATBOT SCREEN ================= -->
-            <div id="screen-chat" class="hidden h-full flex flex-col">
+            <div id="screen-chat" class="content-area hidden h-full flex-col">
                 <div class="glass-header px-4 py-3 text-sm text-white flex items-center gap-2 border-b border-white/20">
                     <div class="bg-white/20 p-1.5 rounded-lg border border-white/30 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
@@ -290,7 +323,7 @@
             </div>
 
             <!-- ================= CHAPTER SUMMARY SCREEN ================= -->
-            <div id="screen-chapter-summary" class="hidden h-full flex flex-col fade-in">
+            <div id="screen-chapter-summary" class="content-area hidden h-full flex-col fade-in">
                 <div class="glass-header px-4 py-3 flex items-center justify-between sticky top-0 z-10 border-b border-white/30">
                     <button onclick="goHome()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center" id="summary-back-btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -335,7 +368,7 @@
         </main>
 
         <!-- ================= BOTTOM NAVIGATION ================= -->
-        <nav class="glass-header border-t border-white/20 shadow-[0_-10px_30px_rgba(0,0,0,0.6)] z-40 shrink-0">
+        <nav class="absolute bottom-0 w-full glass-header border-t border-white/20 shadow-[0_-10px_30px_rgba(0,0,0,0.6)] z-40 shrink-0 md:rounded-b-[1.5rem] md:rounded-bl-[1.5rem]">
             <div class="flex justify-around items-center h-[4.5rem] px-2 relative">
                 <button onclick="openScreen('screen-home')" class="flex flex-col items-center justify-center w-full h-full text-white gap-1.5 nav-btn transition-all duration-300 relative group" id="nav-home">
                     <div class="p-1.5 rounded-xl group-hover:bg-white/10 transition-colors border border-transparent group-hover:border-white/20">
@@ -345,7 +378,7 @@
                     <span class="absolute top-1 right-1/2 translate-x-3 w-1.5 h-1.5 bg-white rounded-full nav-indicator shadow-[0_0_8px_white]" id="ind-home"></span>
                 </button>
                 
-                <!-- Link directly to the PDF file -->
+                <!-- Link directly to the main PDF file -->
                 <a href="htn_guidelines_2026.pdf.pdf" target="_blank" class="flex flex-col items-center justify-center w-full h-full text-sky-200/60 hover:text-white gap-1.5 nav-btn transition-all duration-300 relative group" id="nav-pdf">
                     <div class="p-1.5 rounded-xl group-hover:bg-white/10 transition-colors border border-transparent group-hover:border-white/20">
                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -362,18 +395,6 @@
                 </button>
             </div>
         </nav>
-    </div>
-
-    <!-- ================= PDF MODAL CONTAINER ================= -->
-    <div id="pdf-modal-container">
-        <div class="glass-header px-4 py-3 flex items-center justify-between z-10 border-b border-white/20">
-            <button onclick="closePdfModalView()" class="text-white bg-white/10 border border-white/30 hover:bg-white/20 hover:shadow-[0_0_10px_white] p-2 rounded-full transition-all flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <span class="font-bold text-white text-sm tracking-wide drop-shadow-md">הנחיות 2026</span>
-            <div class="w-10"></div>
-        </div>
-        <iframe id="pdf-iframe" src=""></iframe>
     </div>
 
     <!-- Application Logic -->
@@ -408,209 +429,610 @@
             }
         }, 5000);
 
-        // --- CHAPTERS DATA (Upgraded Icons & Expanded Summaries) ---
+        // --- CHAPTERS DATA ---
         const chaptersData = [
             { 
                 id: 1, 
-                title: "מבוא ואפידמיולוגיה", 
-                icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2" opacity="0.8"/><circle cx="12" cy="12" r="10" opacity="0.3"/>`, 
-                page: 5, 
+                title: "יתר לחץ דם - הגדרה, אבחנה וצורות מדידה", 
+                page: 5,
+                pageDisplay: "5-13",
+                pdfFile: "יתר ל.ד. פרק 1 הגדרה, אבחנה וצורות מדידה עמ' 5-13.pdf",
                 summary: `
-                    <p class="mb-3">🌍 <strong>אפידמיולוגיה וסיכון:</strong> יתר לחץ דם (יל"ד) נותר גורם הסיכון ההפיך המוביל בעולם ובישראל לתמותה קרדיווסקולרית. מעל 25% מהאוכלוסייה הבוגרת סובלת מהתופעה, כשרבים אינם מאוזנים כהלכה.</p>
+                    <p class="mb-3">🌍 <strong>עדכון גישות (2026):</strong> ההנחיות הישראליות נשענות על הבסיס האירופאי (ESC 2024, ESH 2023) תוך שילוב מושגים נבחרים מהגישה האמריקאית (ACC/AHA).</p>
                     <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs underline underline-offset-2">סיווג רמות לחץ דם (במרפאה):</p>
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs underline underline-offset-2">שינויים עיקריים בסיווג רמות לחץ דם:</p>
                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
-                            <li><span class="font-bold">תקין-גבוה:</span> 130-139 / 85-89 ממ"כ (מצריך שינוי אורחות חיים).</li>
-                            <li><span class="font-bold text-yellow-300">יל"ד דרגה 1:</span> 140-159 / 90-99 ממ"כ.</li>
-                            <li><span class="font-bold text-red-400">יל"ד דרגה 2:</span> מעל 160 / 100 ממ"כ.</li>
+                            <li><span class="font-bold text-yellow-300">לחץ דם מוגבר (Elevated):</span> 130-139 / 85-89 ממ"כ. אימוץ מונח זה במקום "גבולי", המייצג סיכון קרדיווסקולרי מוגבר ומחייב התערבות באורחות חיים.</li>
+                            <li><span class="font-bold text-red-400">הגדרת יתר לחץ דם (יל"ד):</span> נותרה מעל 140/90 ממ"כ.</li>
                         </ul>
                     </div>
-                    <p>🎯 <strong>שינוי פרדיגמה ביעדים:</strong> בעקבות מחקרי ענק, היעד הטיפולי כיום למרבית המטופלים (למעט קשישים מופלגים) הוחמר ל-<strong class="text-white bg-violet-600/60 px-1.5 py-0.5 rounded border border-white/20">מתחת ל-130/80 ממ"כ</strong>, בכפוף לסבילות הטיפול, על מנת למקסם הגנה על איברי המטרה.</p>
+                    <p class="mb-3">🎯 <strong>מדידה בשתי הזרועות:</strong> בביקור הראשון יש למדוד בשתי הזרועות בו-זמנית. הפרש סיסטולי עקבי מעל 15 מ"מ כספית קשור למחלה וסקולרית ותמותה מוגברת. במקרה כזה יש להשתמש בזרוע עם הקריאות הגבוהות להמשך המעקב, ולשקול הערכה וסקולרית.</p>
                 ` 
             },
             { 
                 id: 2, 
-                title: "מדידה ואבחנה", 
-                icon: `<path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4h-8a4 4 0 0 1-4-4v-4z" opacity="0.3"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M12 14v4"/><circle cx="12" cy="12" r="2"/>`, 
-                page: 18, 
+                title: "הנחיות לניהול חולה עם יתר לחץ דם ראשוני ושניוני", 
+                page: 14,
+                pageDisplay: "14-19",
+                pdfFile: "יתר ל.ד. פרק 2 - יתר ל.ד. ראשוני ושניוני, עמ' 14-19.pdf",
                 summary: `
-                    <p class="mb-3">🩺 <strong>הסטנדרט החדש לאבחנה:</strong> אבחנת יל"ד אינה מתבססת עוד על מדידה אקראית במרפאה בלבד (למעט ביל"ד דרגה 3). חובה לגבות את האבחנה באמצעות ניטור מחוץ למרפאה (HBPM או ABPM) כדי לשלול תסמונת החלוק הלבן או לאבחן יל"ד ממוסך.</p>
+                    <p class="mb-3">🩺 <strong>הערכה בסיסית ובירור מקיף:</strong> ניהול חולה מאובחן מחייב הערכת גורמי סיכון קיימים, פגיעה באברי מטרה ומחלות נלוות (לב וכלי דם, כליה, סוכרת). יש לאסוף אנמנזה אישית ומשפחתית מדוקדקת ולבצע בדיקה גופנית מקיפה.</p>
                     <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">📱 פרוטוקול מדידה ביתית (HBPM):</p>
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">🧪 בירור מעבדתי וקליני:</p>
                         <p class="text-xs text-white leading-relaxed">
-                            מדידה במשך <strong>7 ימים עוקבים</strong>. בכל יום: 2 מדידות בבוקר (לפני תרופות) ו-2 בערב, בהפרש של דקה.
-                            <br><span class="text-yellow-300 font-bold">כלל ברזל:</span> יש להשמיט את מדידות היום הראשון מהחישוב.
+                            <strong>בדיקות דם:</strong> ספירת דם, גלוקוז בצום (ו/או HbA1C), פרופיל שומנים, נתרן, אשלגן, חומצה אורית, קריאטינין (עם חישוב eGFR), ותפקודי תריס (TSH).<br>
+                            <strong>בדיקות שתן:</strong> בדיקה כללית, מיקרוסקופיה ויחס אלבומין לקריאטינין (ACR).<br>
+                            <strong>הערכה לבבית:</strong> אק\"ג 12 חיבורים (כולל מדדי LVH). אקו לב (TTE) יבוצע בהתאם לממצאים.
                         </p>
                     </div>
-                    <p>💡 חשוב להקפיד על שימוש בשרוול (Cuff) בגודל המותאם להיקף זרועו של המטופל למניעת קריאות שגויות.</p>
+                    <p>💡 <strong>בירור מתקדם ליל\"ד שניוני:</strong> יישקל במקרים כגון יל\"ד מוקדם (מתחת גיל 40), יל\"ד עמיד, פגיעה חריפה בלחץ דם מאוזן או בנוכחות רמזים קליניים וכלייתיים מתאימים.</p>
                 ` 
             },
             { 
                 id: 3, 
-                title: "הערכה קלינית", 
-                icon: `<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" opacity="0.3"/><path d="M12 8v4l3 3" opacity="0.9"/>`, 
-                page: 30, 
+                title: "נזק לאברי מטרה מיתר לחץ דם: כליות ועיניים", 
+                page: 20,
+                pageDisplay: "20-25",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
                 summary: `
-                    <p class="mb-3">🫀 <strong>גילוי נזק נסתר (HMOD):</strong> זיהוי נזק אסימפטומטי לאברי מטרה הוא קריטי כיוון שהוא מקפיץ את המטופל לקטגוריית סיכון גבוהה, ללא קשר לדרגת לחץ הדם עצמה.</p>
+                    <p class="mb-3">🫀 <strong>נזק לאיברי מטרה (HMOD):</strong> יתר לחץ דם מהווה גורם סיכון מרכזי להתפתחות מחלת כליות כרונית ורטינופתיה. אבחון מוקדם חיוני למניעת התדרדרות.</p>
                     <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">בדיקות חובה לכל מטופל חדש:</p>
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">הערכת נזק כלייתי (Nephropathy):</p>
                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
-                            <li><strong>כליות:</strong> חישוב eGFR, בדיקת יחס אלבומין/קריאטינין בשתן.</li>
-                            <li><strong>לב:</strong> אק"ג 12 חיבורים לשלילת היפרטרופיה שמאל (LVH).</li>
-                            <li><strong>דם:</strong> פאנל מטבולי (סוכר, שומנים, אלקטרוליטים).</li>
-                            <li><strong>עיניים:</strong> בדיקת פונדוס (חובה בדרגה 2 ומעלה).</li>
+                            <li><strong>בדיקת סקר:</strong> יחס אלבומין/קריאטינין בשתן (UACR) וחישוב eGFR חיוניים בבדיקת הבסיס ובמעקב.</li>
+                            <li><strong>הגדרות:</strong> מיקרואלבומינוריה (30-300 מ"ג/ג') מעידה על פגיעה כלייתית מוקדמת. מקרואלבומינוריה (>300 מ"ג/ג') מעידה על נזק מתקדם.</li>
+                            <li><strong>טיפול מועדף:</strong> במטופלים עם מיקרואלבומינוריה, טיפול בחסמי מערכת הרנין-אנגיוטנסין (ACEi/ARB) הינו בעדיפות עליונה, גם בהעדר אבחנה של סוכרת.</li>
                         </ul>
                     </div>
-                    <p>ההנחיות ממליצות על שימוש במחשבון <strong>SCORE2</strong> להערכת הסיכון הקרדיווסקולרי הכולל ל-10 שנים.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">הערכת נזק עיני (Retinopathy):</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>בדיקת קרקעית עין:</strong> חיונית לאיתור שינויים בכלי הדם, כגון הצרויות, דימומים או בצקת פטמה.</li>
+                            <li><strong>חשיבות פרוגנוסטית:</strong> חומרת הרטינופתיה נמצאת במתאם עם דרגת היל"ד ומשך המחלה, ומהווה סמן פרוגנוסטי משמעותי לפגיעה באיברים אחרים.</li>
+                        </ul>
+                    </div>
                 ` 
             },
             { 
                 id: 4, 
-                title: "שינוי אורחות חיים", 
-                icon: `<path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z" opacity="0.3"/><path d="M12 2v4"/><path d="M10 10h4"/>`, 
-                page: 45, 
+                title: "אורחות חיים ופעילות גופנית", 
+                page: 26,
+                pageDisplay: "26-39",
+                pdfFile: "יתר ל.ד. פרק 4 - אורחות חיים ופעילות גופנית , עמ' 26-39.pdf",
                 summary: `
-                    <p class="mb-3">🥗 <strong>קו טיפול ראשון לכולם:</strong> שינוי באורחות חיים מהווה את הבסיס ההכרחי למניעה וטיפול, ויכול להוריד את לחץ הדם ביעילות המקבילה לטיפול תרופתי.</p>
-                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-2 shadow-inner grid grid-cols-2 gap-2 text-xs text-white">
-                        <div><strong class="text-sky-300">הגבלת נתרן:</strong><br>עד 2 גרם ליום (<5 גרם מלח).</div>
-                        <div><strong class="text-sky-300">פעילות גופנית:</strong><br>150 דק' אירובי + 2 אימוני התנגדות.</div>
-                        <div><strong class="text-sky-300">תזונה:</strong><br>דיאטת DASH (פירות, ירקות, דלי שומן).</div>
-                        <div><strong class="text-sky-300">משקל:</strong><br>ירידה של 1 ק"ג = הפחתת 1 ממ"כ.</div>
+                    <p class="mb-3">🥗 <strong>הבסיס לטיפול ומניעה:</strong> שינוי באורחות חיים הוא חלק בלתי נפרד מהטיפול ביתר לחץ דם, הן כצעד ראשון והן בשילוב טיפול תרופתי. שינוי כוללני יעיל יותר משינוי בודד.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-2 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">התערבויות תזונתיות מרכזיות:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong class="text-yellow-300">הגבלת נתרן (מלח):</strong> יעד של <2.0 גרם נתרן ביום (<5.0 גרם מלח). הפחתה זו יכולה להוריד את לחץ הדם הסיסטולי ב-2-8 ממ"כ.</li>
+                            <li><strong class="text-sky-300">דיאטת DASH:</strong> תזונה עשירה בירקות, פירות, חלב דל שומן, דגנים מלאים, עוף, דגים ואגוזים, דלה בממתקים ובשר אדום. חשוב להדגיש צריכת <strong class="text-green-400">אשלגן</strong> נאותה (3.5-5.0 גרם/יום) ממקורות טבעיים (באנשים ללא פגיעה כלייתית).</li>
+                            <li><strong class="text-red-400">הפחתת אלכוהול:</strong> צריכה גבוהה מעלה את הסיכון ליל"ד באופן לינארי. מומלץ להימנע (הכי טוב למניעה) או להגביל לעד 2 מנות/יום לגברים ומנה/יום לנשים.</li>
+                        </ul>
                     </div>
-                    <p class="mt-2 text-xs">🚬 <strong>הפסקת עישון:</strong> הצעד הבודד היעיל ביותר להורדת הסיכון הקרדיווסקולרי.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-2 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">פעילות גופנית וירידה במשקל:</p>
+                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong class="text-yellow-300">שליטה במשקל:</strong> ירידה של 1 ק"ג מפחיתה בממוצע את לחץ הדם ב-1 ממ"כ. מומלץ לשמור על BMI < 25 (בגילאי 20-65) או למנוע עלייה במשקל. יש למדוד גם היקף מותן.</li>
+                            <li><strong class="text-sky-300">פעילות אירובית:</strong> לפחות 150 דקות בשבוע של פעילות גופנית אירובית בעצימות בינונית (כגון הליכה, ריצה, שחייה, אופניים).</li>
+                            <li><strong class="text-purple-300">אימוני התנגדות:</strong> מומלץ לשלב פעילות גופנית המפעילה כוח והתנגדות דינמיים, 2-3 פעמים בשבוע.</li>
+                        </ul>
+                    </div>
+                    <p class="mt-2 text-xs">🚬 <strong>הפסקת עישון:</strong> קריטית להפחתת הסיכון הקרדיווסקולרי הכולל, למרות שאינה מפחיתה ישירות את לחץ הדם לטווח ארוך.</p>
                 ` 
             },
             { 
                 id: 5, 
-                title: "טיפול תרופתי", 
-                icon: `<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" opacity="0.3"/><path d="m8.5 8.5 7 7" stroke-width="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/>`, 
-                page: 52, 
+                title: "תזונה ולחץ דם", 
+                page: 40,
+                pageDisplay: "40-48",
+                pdfFile: "יתר ל.ד. פרק 5 עמ' 40-48.pdf",
                 summary: `
-                    <p class="mb-3">💊 <strong>כדור משולב (SPC):</strong> כדי להתגבר על חוסר היענות מטופלים, ההנחיות קובעות כי <strong>יש להתחיל טיפול בשילוב של 2 תרופות בכדור אחד</strong> עבור רוב המטופלים.</p>
+                    <p class="mb-3">🥗 <strong>דפוסי תזונה כוללים:</strong> הגישה העדכנית מדגישה מעבר מהתמקדות בנוטריינטים בודדים להתבוננות על דפוסי תזונה כוללים (כמו דיאטת DASH או תזונה ים-תיכונית), מתוך הבנה שישנה אינטראקציה סינרגיסטית בין מרכיבי המזון השונים המשפיעה על הורדת לחץ הדם.</p>
                     <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">אלגוריתם הטיפול המרכזי:</p>
-                        <ol class="list-decimal list-inside text-white space-y-1 text-xs">
-                            <li><strong>שלב 1:</strong> מעכב ציר רנין (ACEi או ARB) + חסם תעלות סידן (CCB) <em>או</em> משתן.</li>
-                            <li><strong>שלב 2:</strong> שילוב משולש באותו כדור: ACEi/ARB + CCB + משתן תיאזידי.</li>
-                        </ol>
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">עקרונות תזונה מרכזיים להורדת ל"ד:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>הגבלת נתרן מוקפדת:</strong> יעד צריכה של עד 2.0 גרם נתרן ביום (המקבילים ל-5.0 גרם מלח בישול). מרבית הנתרן מגיע ממזון מעובד, לכן יש חשיבות רבה לקריאת תוויות מזון ולהימנעות ממזונות אולטרה-מעובדים.</li>
+                            <li><strong>העשרת התזונה באשלגן:</strong> מומלצת צריכה של 3.5-5.0 גרם אשלגן ביום (כ-90-120 מא"ק), רצוי ממקורות טבעיים כגון ירקות (במיוחד עלים ירוקים, עגבניות, בטטות), פירות, קטניות, אגוזים וזרעים. (הערה: יש להיזהר בחולים עם פגיעה כלייתית או נטייה להיפרקלמיה).</li>
+                            <li><strong>תזונה ים-תיכונית ו-DASH:</strong> צריכה מוגברת של מזון צמחי לא מעובד, שילוב שמן זית, הגבלת בשר אדום, שומן רווי וסוכר מוסף. נמצא כי דפוסים אלו יעילים באופן עקבי בהורדת ל"ד ובהפחתת סיכון קרדיווסקולרי.</li>
+                            <li><strong>הפחתת מזון אולטרה-מעובד (UPF):</strong> מזונות אלו תורמים לעליה במשקל, דלקת, ותנגודת לאינסולין, ולכן קשורים בצורה הדוקה לעלייה בלחץ הדם.</li>
+                        </ul>
                     </div>
-                    <p class="text-xs text-red-300 font-bold">⚠️ התוויית נגד מוחלטת: אין לשלב ACEi יחד עם ARB עקב סכנה חמורה לפגיעה כלייתית חריפה.</p>
+                    <p class="mt-2 text-xs">🧬 <strong>רפואה מותאמת אישית (Precision Nutrition):</strong> ההנחיות מדגישות כי בעתיד צפויה התאמת התזונה להיות אישית יותר, על בסיס פרופיל גנטי, מיקרוביום, וסמנים ביולוגיים נוספים.</p>
                 ` 
             },
             { 
                 id: 6, 
-                title: "יל\"ד עמיד לטיפול", 
-                icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" opacity="0.3"/><path d="M13 8l-2 4h3l-2 4"/>`, 
-                page: 70, 
+                title: "מתי יש להתחיל טיפול תרופתי להורדת לחץ הדם, ומהם יעדי הטיפול", 
+                page: 49,
+                pageDisplay: "49-53",
+                pdfFile: "יתר ל.ד. פרק 6 - התחלת הטיפול ויעד הטיפול, עמ' 49-53.pdf",
                 summary: `
-                    <p class="mb-2">🛡️ <strong>הגדרת "עמידות":</strong> לחץ דם מעל יעד המטרה למרות שימוש נכון ב-3 תרופות שונות (במינון מקסימלי נסבל), כאשר חובה שאחת מהן תהיה תרופה משתנת (Diuretic).</p>
+                    <p class="mb-3">💊 <strong>התחלת טיפול ותועלת:</strong> רוב חולי יל"ד יזדקקו לטיפול תרופתי במקביל לשינוי אורחות חיים. הפחתה של 7 ממ"כ מורידה תמותה ותחלואה קרדיו-וסקולרית באופן משמעותי.</p>
                     <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">לפני אבחנת עמידות, חובה לשלול:</p>
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">יעדי הטיפול (לפי שיטת מדידה):</p>
                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
-                            <li>אי-היענות לטיפול תרופתי (סיבה מס' 1).</li>
-                            <li>תסמונת חלוק לבן (יש לבצע הולטר - ABPM).</li>
-                            <li>שימוש בתרופות נוגדות (NSAIDs, סטרואידים, גלולות).</li>
+                            <li><strong>במרפאה ובבית:</strong> מתחת ל- 130/80 ממ"כ (בכפוף לסבילות).</li>
+                            <li><strong>הולטר (ABPM):</strong> בשעות הערנות מתחת ל- 130/80, ובשעות השינה מתחת ל- 120/70 ממ"כ.</li>
                         </ul>
                     </div>
-                    <p class="text-xs">💉 <strong>קו טיפול רביעי:</strong> הוספת <strong>Spironolactone</strong> (במינון 12.5-50 מ"ג), תוך ניטור מחמיר של רמות אשלגן ותפקוד כלייתי למניעת היפרקלמיה.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">אוכלוסיות מיוחדות:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>סוכרת ו-CKD:</strong> שאיפה ליעד < 130/80 ממ"כ, במיוחד בנוכחות הפרשת חלבון > 300 מ"ג/ד"ל.</li>
+                            <li><strong>קשישים ושבריריות:</strong> יעדי הטיפול מותאמים אישית בהתחשב במצב התפקודי, המנטלי ומידת השבריריות.</li>
+                        </ul>
+                    </div>
                 ` 
             },
             { 
                 id: 7, 
-                title: "יתר לחץ דם משני", 
-                icon: `<path d="M21 21l-4.3-4.3"/><circle cx="11" cy="11" r="8" opacity="0.3"/><path d="M11 8v6"/><path d="M8 11h6"/>`, 
-                page: 85, 
+                title: "טיפול ביתר לחץ דם - מפתוגנזה לפרמקולוגיה", 
+                page: 54,
+                pageDisplay: "54-60",
+                pdfFile: "יתר ל.ד. פרק 7 - טיפול תרופתי, עמ' 54-60.pdf",
                 summary: `
-                    <p class="mb-2">🔍 <strong>דגלים אדומים לבירור:</strong> יל"ד משני הוא הפיך לעיתים קרובות. יש לחשוד בו בקרב מטופלים צעירים (מתחת לגיל 30), יל"ד עמיד, יל"ד מחמיר בפתאומיות, או בנוכחות היפוקלמיה ספונטנית.</p>
-                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">גורמים נפוצים וסקר אבחנתי:</p>
-                        <ul class="list-disc list-inside text-white space-y-1.5 text-xs">
-                            <li><strong>היפראלדוסטרוניזם ראשוני:</strong> שכיח מבעבר (עד 10%). בירור: יחס אלדוסטרון/רנין בדם (ARR).</li>
-                            <li><strong>דום נשימה בשינה (OSA):</strong> סיבה נפוצה מאוד להעדר ירידת ל"ד בלילה (Non-dipping).</li>
-                            <li><strong>היצרות עורקי הכליה:</strong> חשד גבוה אם יש החמרה בתפקוד הכלייתי לאחר מתן מעכבי ACE.</li>
+                    <p class="mb-3">🔬 <strong>פתוגנזה של יתר לחץ דם:</strong> לחץ הדם נקבע על ידי יחסי גומלין מורכבים בין הכליות, הלב, כלי הדם, והמערכות הנוירוהורמונלית והחיסונית. גורמים מרכזיים כוללים השמנה, צריכת מלח גבוהה, ואורח חיים יושבני.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">מנגנונים פיזיולוגיים מרכזיים ומטרות טיפול:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>הכליה ומאזן נתרן:</strong> פגיעה במנגנון הפרשת הנתרן הכלייתי. תרופות: <span class="text-yellow-300">משתנים (Diuretics)</span> לקידום הפרשת נתרן ומים.</li>
+                            <li><strong>מערכת הרנין-אנגיוטנסין (RAAS):</strong> פעילות יתר גורמת לכיווץ כלי דם ואצירת נוזלים. תרופות: <span class="text-yellow-300">מעכבי ACE, חסמי קולטן לאנגיוטנסין (ARBs) וחסמי אלדוסטרון (MRA)</span>.</li>
+                            <li><strong>המערכת הסימפתטית (SNS):</strong> פעילות יתר, בעיקר בהשמנה ודום נשימה. תרופות: <span class="text-yellow-300">חסמי בטא (Beta-blockers)</span>.</li>
+                            <li><strong>קשיות עורקים (Vascular Stiffness):</strong> אופייני לגיל המבוגר וגורם ליל"ד סיסטולי מבודד. תרופות מועדפות: <span class="text-yellow-300">חסמי תעלות סידן (CCB) ומשתנים</span>.</li>
                         </ul>
                     </div>
+                    <p class="text-xs text-white">💡 <strong>הבנת המנגנונים</strong> מאפשרת להתאים את הטיפול התרופתי באופן אישי, ולעתים קרובות נדרש שילוב של תרופות ממנגנונים שונים להשגת איזון יעיל.</p>
                 ` 
             },
             { 
                 id: 8, 
-                title: "מצבי חירום ודחיפות", 
-                icon: `<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" opacity="0.3"/><path d="M12 9v4" stroke-width="3"/><path d="M12 17h.01" stroke-width="3"/>`, 
-                page: 100, 
+                title: "טיפול פארמקולוגי לאיזון יתר לחץ דם", 
+                page: 61,
+                pageDisplay: "61-81",
+                pdfFile: "יתר ל.ד. פרק 8 - טיפול פרמקולוגי, עמ' 61-81.pdf",
                 summary: `
-                    <p class="mb-2">🚨 <strong>הבחנה קריטית:</strong> עליית לחץ דם חמורה (מעל 180/110) דורשת סיווג מיידי על סמך פגיעה באברי מטרה ולא רק על סמך המספרים.</p>
-                    <div class="bg-black/30 p-3 rounded-xl border border-white/20 mb-2 shadow-inner text-xs text-white">
-                        <p><strong class="text-red-400">מצב חירום (Emergency):</strong> פגיעה אקוטית (בצקת ריאות, אנצפלופתיה, דיסקציה). מחייב טיפול נמרץ, מתן <strong>תרופות תוך-ורידיות (IV)</strong>, והורדת הל"ד ב-25% תוך שעות.</p>
-                        <hr class="my-2 border-white/10">
-                        <p><strong class="text-yellow-300">מצב דחיפות (Urgency):</strong> ללא נזק אקוטי מתקדם. הטיפול הוא בתרופות <strong>פומיות (דרך הפה)</strong> והורדה הדרגתית על פני ימים כדי למנוע איסכמיה מוחית.</p>
+                    <p class="mb-3">💊 <strong>עקרונות הטיפול התרופתי:</strong> הטיפול נועד למנוע סיבוכים קרדיווסקולריים ויש לשלבו עם שינוי באורחות חיים. קבוצות הקו הראשון כוללות: מעכבי ACE, חסמי קולטן לאנגיוטנסין (ARBs), חסמי תעלות סידן (CCB), ומשתנים (תיאזיד או דמויי-תיאזיד).</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">פירוט קבוצות הקו הראשון:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong class="text-yellow-300">מעכבי RAAS (ACEi / ARB):</strong> בעלי יעילות דומה. ל-ARBs סבילות טובה יותר (פחות שיעול). <span class="text-red-400 font-bold">אסור לשלב ACEi עם ARB</span> עקב סכנה כלייתית.</li>
+                            <li><strong class="text-yellow-300">חסמי תעלות סידן (CCB):</strong> קבוצת הדיהידרופירידינים (למשל אמלודיפין) יעילה מאוד, במיוחד ביל"ד סיסטולי מבודד ובקשישים.</li>
+                            <li><strong class="text-yellow-300">משתנים (Thiazide-like):</strong> קלורתלידון ואינדפאמיד מועדפים על פני הידרוכלורותיאזיד (HCTZ) עקב זמן מחצית חיים ארוך יותר והוכחות ליעילות קרדיווסקולרית משופרת.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">אלגוריתם הטיפול העדכני:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>התחלת טיפול:</strong> שילוב של 2 תרופות בכדור אחד (SPC) - בדרך כלל ACEi/ARB עם CCB או משתן.</li>
+                            <li><strong>שלב שני:</strong> מעבר לכדור משולש (Triple SPC) הכולל ACEi/ARB + CCB + משתן.</li>
+                            <li><strong>חסמי בטא (Beta-blockers):</strong> אינם מומלצים כקו ראשון ליל"ד לא מורכב. יינתנו כאשר יש התוויה ספציפית (אי ספיקת לב, לאחר אוטם, תעוקת חזה, פרפור עליות, או נשים בהריון).</li>
+                        </ul>
                     </div>
                 ` 
             },
             { 
                 id: 9, 
-                title: "אוכלוסיות מיוחדות", 
-                icon: `<circle cx="9" cy="7" r="4" opacity="0.3"/><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" opacity="0.3"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`, 
-                page: 115, 
+                title: "טיפול ביתר לחץ דם עמיד ויל\"ד עקיש (רפרקטורי)", 
+                page: 82,
+                pageDisplay: "82-85",
+                pdfFile: "יתר ל.ד. פרק 9 - טיפול בל.ד. עמיד, עמ' 81-85.pdf",
                 summary: `
-                    <p class="mb-3">👴 <strong>קשישים (מעל גיל 80):</strong> היעדים מתונים יותר (<140/90). חובה לנטר <strong class="text-yellow-300">תת-לחץ דם תנוחתי (אורתוסטטי)</strong> באמצעות מדידת ל"ד במעבר משכיבה לעמידה, כדי למנוע סכנת נפילות ותחלואה.</p>
-                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">חולי סוכרת ואי-ספיקת כליות (CKD):</p>
+                    <p class="mb-3">🛡️ <strong>הגדרות יל"ד עמיד ועיקש:</strong> יל"ד עמיד (Resistant) מוגדר כ-ל"ד מעל היעד (>130/80) למרות טיפול ב-3 תרופות (כולל משתן) במינון מרבי נסבל. יל"ד רפרקטורי (עיקש) הוא מצב שבו הל"ד לא מאוזן למרות טיפול ב-5 תרופות (כולל ספירונולקטון).</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">צעדים לפני קביעת עמידות (שלילת Pseudo-Resistance):</p>
                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
-                            <li>יעד מחמיר במיוחד: <strong>מתחת ל-130/80 ממ"כ</strong>.</li>
-                            <li>תרופת הבחירה הראשונה: חסמי המערכת רנין-אנגיוטנסין (ACEi או ARB) הודות לאפקט המגן על הכליה (הורדת פרוטאינוריה).</li>
+                            <li>וידוא היענות לטיפול (Non-adherence מהווה עד 50% ממקרי העמידות-לכאורה).</li>
+                            <li>שלילת אפקט חלוק לבן באמצעות הולטר ל"ד (ABPM) או מדידות ביתיות.</li>
+                            <li>שלילת חומרים מעלי ל"ד (כגון NSAIDs, סטרואידים, גלולות, או צריכה מופרזת של ליקוריץ/שוש).</li>
+                            <li>שלילת יתר לחץ דם שניוני (למשל דום נשימה בשינה, היפראלדוסטרוניזם ראשוני).</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs text-white">💉 <strong>טיפול קו רביעי:</strong> התרופה המועדפת היא <strong>Spironolactone</strong> (במינון 12.5-50 מ"ג), בכפוף לתפקוד כלייתי מספק (eGFR>30) ורמות אשלגן תקינות (<4.5). חלופות כוללות: חסמי בטא, Doxazosin או קלונידין.</p>
+                ` 
+            },
+            { 
+                id: 10, 
+                title: "מעקב אחר חולה עם יתר לחץ דם מטופל", 
+                page: 86,
+                pageDisplay: "86-90",
+                pdfFile: "יתר ל.ד. פרק 10 - מעקב, עמ' 86-90.pdf",
+                summary: `
+                    <p class="mb-3">🩺 <strong>מטרות ויעדי המעקב:</strong> מעקב שגרתי ורציף הכרחי להערכת איזון לחץ הדם, גילוי תופעות לוואי, ניטור פגיעה לאברי מטרה ובדיקת ההיענות לטיפול. תקשורת פתוחה ועידוד המטופל (Shared decision making) חיוניים להצלחה טיפולית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">תדירות ובדיקות במעקב שגרתי:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>תחילת טיפול / שינוי מינון:</strong> מעקב כל 2-4 שבועות עד להשגת היעד. יש לבצע תפקודי כליות (קריאטינין ואלקטרוליטים) 2-4 שבועות לאחר התחלת טיפול במעכבי RAAS או משתנים.</li>
+                            <li><strong>מטופל מאוזן היטב:</strong> ביקורת רופא כל 3-6 חודשים.</li>
+                            <li><strong>בדיקות דם שנתיות:</strong> יש להשלים הערכת פגיעה באיברי מטרה (HMOD) לפחות פעם בשנה - בדיקת eGFR, יחס אלבומין/קריאטינין בשתן, סוכר, פרופיל שומנים ואק"ג.</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs text-white">📱 מומלץ מאוד לעודד <strong>ניטור ל"ד ביתי (HBPM)</strong> ושימוש באמצעים דיגיטליים למעקב בין ביקור לביקור. שימוש בכדורים משולבים (SPC) משפר משמעותית את ההתמדה בטיפול לאורך זמן.</p>
+                ` 
+            },
+            { 
+                id: 11, 
+                title: "טיפול ביתר לחץ דם באוכלוסייה מבוגרת", 
+                page: 91,
+                pageDisplay: "91-100",
+                pdfFile: "יתר ל.ד. פרק 11 - אוכלוסיה מבוגרת, עמ' 91-100.pdf",
+                summary: `
+                    <p class="mb-3">👴 <strong>טיפול מותאם גיל ושבריריות:</strong> הטיפול באוכלוסייה המבוגרת (מעל גיל 65, ובפרט מעל 80) מצריך איזון עדין בין מניעת אירועים קרדיווסקולריים למניעת תופעות לוואי ופגיעה באיכות החיים. יש להתייחס לגיל הביולוגי ולמדדי שבריריות (Frailty) כיותר קריטיים מהגיל הכרונולוגי.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">יעדים ועקרונות טיפול מרכזיים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>גילאי 65-79:</strong> יעד הטיפול המומלץ הוא לרוב <130/80 ממ"כ, כל עוד הטיפול נסבל היטב ואינו גורם לסחרחורות.</li>
+                            <li><strong>גילאי 80 ומעלה:</strong> סף התחלת הטיפול לרוב יהיה סיסטולי ≥160 ממ"כ. יעד ההורדה הראשוני הוא מתחת ל-140/90 ממ"כ (ניתן לשקול <130 במבוגרים חסונים ועצמאיים).</li>
+                            <li><strong>אוכלוסייה שברירית (Frail):</strong> מחייבת גישה שמרנית ואינדיבידואלית, והקלה משמעותית ביעדי המטרה כדי להימנע מנפילות.</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs text-white">⚠️ <strong>חובת מדידת לחץ דם בעמידה:</strong> חובה לשלול תת-לחץ דם אורתוסטטי (צניחה של ≥20 סיסטולי או ≥10 דיאסטולי). יש להתחיל טיפול תרופתי במינון נמוך ("Start low, go slow"), על אף שטיפול בכדור משולב (SPC) עדין עדיין רלוונטי להרבה מהמטופלים.</p>
+                ` 
+            },
+            { 
+                id: 12, 
+                title: "יתר לחץ דם בילדים ומתבגרים", 
+                page: 101,
+                pageDisplay: "101-137",
+                pdfFile: "יתר ל.ד. בילדים מתבגרים פרק 12, עמ' 101-137.pdf",
+                summary: `
+                    <p class="mb-3">🧒 <strong>הגדרות ואבחון בילדים:</strong> יל"ד בילדים שונה מהותית מזה של מבוגרים, ומוגדר באמצעות טבלאות אחוזונים התלויות בגיל, מין וגובה (עד גיל 13). קיימת המלצה ברורה לניטור שגרתי החל מגיל 3 (לפחות 3 מדידות לאורך שנות הילדות).</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">דגשים לאבחון וטיפול:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>ילדים בסיכון:</strong> יש לבצע ניטור שנתי בילדים עם השמנה, מחלות כליה, פגות, תרופות מעלות ל"ד (למשל תרופות לקשב וריכוז, סטרואידים), ומחלות מולדות.</li>
+                            <li><strong>שלילת סיבות משניות:</strong> בניגוד למבוגרים, השכיחות ליל"ד משני (בעיקר פגיעות כליה וכלי דם) גבוהה בהרבה ולכן נדרש בירור מעמיק ומקיף.</li>
+                            <li><strong>הולטר (ABPM):</strong> כלי חשוב ביותר לאישור האבחנה בילדים, שלילת "חלוק לבן" והערכת אפקטיביות הטיפול.</li>
+                        </ul>
+                    </div>
+                    <p class="text-xs text-white">🥗 <strong>טיפול ראשוני:</strong> מבוסס על שינוי באורחות חיים, כולל הפחתת משקל, הגבלת מלח, תזונה נכונה ופעילות גופנית. הטיפול התרופתי יישמר למצבים מתקדמים או סימפטומטיים.</p>
+                ` 
+            },
+            { 
+                id: 13, 
+                title: "יתר לחץ דם במבוגרים עם מחלת כליות כרונית", 
+                page: 138,
+                pageDisplay: "138-147",
+                pdfFile: "יתר ל.ד. פרק 13 - מחלת כליות, עמ' 138-147.pdf",
+                summary: `
+                    <p class="mb-3">⚕️ <strong>כליה כלחץ הדם:</strong> מחלת כליות כרונית (CKD) היא גורם סיכון מרכזי ליל"ד, ובו-זמנית מהווה איבר מטרה הנפגע כתוצאה מיל"ד. איזון לחץ הדם הכרחי למניעת התדרדרות לאי ספיקת כליות סופנית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">דגשים קליניים לחולי CKD:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>יעד הטיפול:</strong> ההנחיות דוחפות ליעד מחמיר של מתחת ל- 130/80 ממ"כ להפחתת הסיכון הקרדיווסקולרי, ובמיוחד בנוכחות הפרשת חלבון (פרוטאינוריה).</li>
+                            <li><strong>תרופות קו ראשון:</strong> קיימת עדיפות מובהקת לטיפול במעכבי המערכת הרנין-אנגיוטנסין (ACEi או ARB) בשל ההגנה הכלייתית והפחתת הפרוטאינוריה מעבר להורדת הלחץ דם עצמו.</li>
+                            <li><strong>ניטור קפדני:</strong> עם תחילת טיפול יש לנטר בקפדנות את רמות הקריאטינין והאשלגן כדי למנוע היפרקלמיה והחמרה חדה בתפקוד.</li>
                         </ul>
                     </div>
                 ` 
             },
             { 
-                id: 10, 
-                title: "נשים ובהריון", 
-                icon: `<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" opacity="0.3"/><circle cx="12" cy="10" r="3"/>`, 
-                page: 130, 
+                id: 14, 
+                title: "יתר לחץ דם במטופלי דיאליזה ובמושתלי כליה", 
+                page: 148,
+                pageDisplay: "148-152",
+                pdfFile: "יתר ל.ד. פרק 14 - מטופלי דיאליזה, עמ'148-152.pdf",
                 summary: `
-                    <p class="mb-2">🤰 <strong>הבחנות בהריון:</strong> חשוב להבדיל בין יל"ד כרוני, יל"ד הריוני (מעל שבוע 20 ללא חלבון בשתן) ו<strong>רעלת הריון (Preeclampsia)</strong> שמלווה בפרוטאינוריה ומהווה סכנה מיידית.</p>
-                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-2 shadow-inner text-xs text-white">
-                        <p class="font-bold text-sky-300 mb-1.5">בטיחות תרופות בהריון (טרטוגניות):</p>
-                        <p><span class="text-green-400 font-bold">✓ מותר ובטוח:</span> Labetalol, Methyldopa, Nifedipine.</p>
-                        <p class="mt-1"><span class="text-red-400 font-bold">✖ אסור לחלוטין:</span> מעכבי ACE ו-ARB (גורמים למומים ונזק כלייתי לעובר).</p>
+                    <p class="mb-3">🩸 <strong>אתגרים בטיפול:</strong> יתר לחץ דם באוכלוסיית מטופלי הדיאליזה הוא תופעה מורכבת ביותר, הנובעת לרוב מעומס יתר כרוני של נפח נוזלים חוץ-תאי בין הטיפולים, לצד התנגדות וסקולרית מוגברת והפעלת המערכת הסימפתטית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">ניהול הלחץ דם בדיאליזה והשתלה:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>חשיבות משקל היבש:</strong> ניהול נוזלים מדויק וקפדני (קביעת "משקל יבש") הוא הצעד הטיפולי הראשון והחשוב ביותר במטופלי דיאליזה.</li>
+                            <li><strong>יעדים תרופתיים:</strong> היעד המומלץ גם למושתלים וגם לחולי דיאליזה הוא לרוב מתחת ל- 130/80 ממ"כ (נגזר מיעדי CKD).</li>
+                            <li><strong>טיפול תרופתי:</strong> ישנה עדיפות לטיפול בחסמי תעלות סידן (CCB) או מעכבי רצפטור לאנגיוטנסין (ARB) במושתלים, תוך זהירות רבה מאינטראקציות עם תרופות אימונוסופרסיביות.</li>
+                        </ul>
                     </div>
                 ` 
             },
             { 
-                id: 11, 
-                title: "ילדים ומתבגרים", 
-                icon: `<path d="M8 14s1.5 2 4 2 4-2 4-2" opacity="0.3"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2"/><circle cx="12" cy="12" r="10" opacity="0.3"/>`, 
-                page: 145, 
+                id: 15, 
+                title: "יתר לחץ דם בשל מחלה בעורקי הכליות", 
+                page: 153,
+                pageDisplay: "153-158",
+                pdfFile: "יתר ל.ד. פרק 15- מחלה בעורקי כליות, עמ'153-158.pdf",
                 summary: `
-                    <p class="mb-3">🧒 <strong>שיטת האבחון:</strong> בילדים (מתחת לגיל 13), הגדרת יתר לחץ דם אינה מספרית קבועה, אלא תלויה ב<strong>טבלאות אחוזונים</strong> (בהתאם למין, גיל ואחוזון גובה). לחץ דם מעל אחוזון 95% מוגדר כ-HTN.</p>
-                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 shadow-inner">
-                        <p class="font-bold text-sky-300 mb-1.5 text-xs">דגשים לרופא המטפל:</p>
+                    <p class="mb-3">🔍 <strong>יל"ד רנו-וסקולרי (RVH):</strong> היצרות של עורקי הכליה (Renal Artery Stenosis) מהווה סיבה מרכזית, ולעיתים הפיכה, ליתר לחץ דם שניוני. היא שכיחה בעיקר בקרב מטופלים עם יל"ד עמיד.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">אטיולוגיה וניהול:</p>
                         <ul class="list-disc list-inside text-white space-y-1 text-xs">
-                            <li>בירור הסיבות: בניגוד למבוגרים, בילדים הסיכוי ליל"ד <strong>משני</strong> (בעיקר פגיעות כליה) הוא גבוה מאוד ומחייב בירור מקיף.</li>
-                            <li>קו טיפול ראשון: התערבות אגרסיבית באורחות חיים הכוללת מניעה וטיפול בהשמנת יתר בקרב נוער.</li>
+                            <li><strong>גיל מבוגר (מעל 50):</strong> ההיצרות לרוב נגרמת מטרשת עורקים (Atherosclerosis) וקשורה לתחלואה קרדיו-וסקולרית היקפית נוספת.</li>
+                            <li><strong>גיל צעיר:</strong> הסיבה השכיחה ביותר היא Fibromuscular Dysplasia (FMD).</li>
+                            <li><strong>החלטה טיפולית:</strong> הגישה הטיפולית מצריכה שקלול זהיר בין טיפול תרופתי שמרני (תרופות) לבין התערבות פולשנית כגון צנתור עורק הכליה (Revascularization), אשר נשמרת למקרים בהם הטיפול התרופתי נכשל או שישנה התדרדרות כלייתית מהירה.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 16, 
+                title: "יתר לחץ דם אנדוקריני", 
+                page: 159,
+                pageDisplay: "159-167",
+                pdfFile: "יתר ל.ד. פרק 16 - יתר לחץ דם אנדוקריני, עמ' 159-167.pdf",
+                summary: `
+                    <p class="mb-3">🩺 <strong>הפרעות הורמונליות:</strong> יתר לחץ דם אנדוקריני הוא סוג של יל"ד שניוני הנובע מהפרשת יתר של הורמונים המשפיעים ישירות או בעקיפין על ויסות לחץ הדם. זיהוי מוקדם מאפשר טיפול מדויק ופעמים רבות ריפוי מלא.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">המחלות העיקריות שיש לחשוד בהן:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>פאוכרומוציטומה (Pheochromocytoma):</strong> גידול המפריש קטכולאמינים, מתאפיין לעיתים בהתקפים של פלפיטציות, הזעה, כאבי ראש ויל"ד התקפי. אבחון באמצעות מטנפרינים באיסוף שתן או בפלזמה.</li>
+                            <li><strong>תסמונת קושינג (Cushing):</strong> עודף קורטיזול המלווה בהשמנה בטנית, חולשת שרירים, ועור דק. נדרש בירור של איסוף קורטיזול בשתן או מבחן דיכוי דקסמטזון.</li>
+                            <li><strong>הפרעות בבלוטת התריס:</strong> הן פעילות יתר והן תת-פעילות (היפר/היפו-תירואידיזם) יכולות לגרום לשינויים בלחץ הדם.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 17, 
+                title: "היפראלדוסטרוניזם ראשוני", 
+                page: 168,
+                pageDisplay: "168-174",
+                pdfFile: "יתר ל.ד. פרק 17 - היפראלדוסטרוניזם ראשוני, עמ'168-174.pdf",
+                summary: `
+                    <p class="mb-3">🔬 <strong>גורם שכיח (Primary Aldosteronism - PA):</strong> היפראלדוסטרוניזם ראשוני נחשב כיום לסיבה השכיחה ביותר ליתר לחץ דם שניוני, וקיים בקרב 20-30% מהמטופלים עם יל"ד עמיד אמיתי. הגישה העדכנית קוראת לסקירה רחבה בהרבה מבעבר.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">עקרונות אבחון וטיפול:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>סקירה רחבה:</strong> ההנחיה העדכנית ממליצה לסקור את כלל המטופלים עם יתר לחץ דם קבוע מוכח ל-PA (על ידי יחס אלדוסטרון לרנין).</li>
+                            <li><strong>סימני אזהרה:</strong> לעיתים מלווה בהיפוקלמיה (רמות אשלגן נמוכות), אך במקרים רבים האשלגן נותר תקין.</li>
+                            <li><strong>ניהול קליני:</strong> לאחר אישור ביוכימי, יש להבחין בין מחלה חד-צדדית (אדנומה, היכולה להיות מטופלת ניתוחית) לבין מחלה דו-צדדית (מטופלת תרופתית באמצעות חסמי רצפטור מינרלוקורטיקואידי כמו ספירונולקטון).</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 18, 
+                title: "תרופות הגורמות ליתר לחץ דם", 
+                page: 175,
+                pageDisplay: "175-182",
+                pdfFile: "יתר ל.ד. פרק 18 - תרופות גורמות ללחץ דם, עמ' 175-182.pdf",
+                summary: `
+                    <p class="mb-3">💊 <strong>גורם משמעותי ותת-מוערך:</strong> תרופות, תוספי תזונה וחומרים שונים מהווים גורם נפוץ ליתר לחץ דם שניוני או לחוסר איזון של יל"ד קיים. כ-18% מהאוכלוסייה עם יל"ד משתמשים בתרופות אלו, במיוחד חולי כליות, אי ספיקת לב וקשישים.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">קבוצות התרופות והחומרים המרכזיים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>NSAIDs (נוגדי דלקת שאינם סטרואידים):</strong> גורמים לאצירת נתרן ומים, ויכולים לפגוע ביעילות הטיפול האנטי-היפרטנסיבי (יש להגביל שימוש או להעדיף אקמול במטופלים מסוימים).</li>
+                            <li><strong>אמצעי מניעה הורמונליים:</strong> גלולות המכילות אסטרוגן.</li>
+                            <li><strong>סטרואידים ואימונוסופרסנטים:</strong> כגון פרדניזון וציקלוספורין.</li>
+                            <li><strong>תרופות אונקולוגיות:</strong> מעכבי VEGF וטיפולים ביולוגיים חדשים.</li>
+                            <li><strong>נוספים:</strong> תרופות נוגדות דיכאון (כגון SNRI), אלכוהול מופרז וסמים (קוקאין, אמפטמינים).</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 19, 
+                title: "הטיפול ביתר לחץ דם בבית חולים ובמצבי חירום של יתר לחץ דם", 
+                page: 183,
+                pageDisplay: "183-196",
+                pdfFile: "יתר ל.ד. פרק 19- מצבי חירום, עמ'183-196.pdf",
+                summary: `
+                    <p class="mb-3">🚨 <strong>הבחנה קריטית במיון:</strong> עליית לחץ דם חמורה דורשת קודם כל סיווג למצב חירום אקוטי או למצב אסימפטומטי. עלייה חריפה (מעל 180/110) ללא נזק חד לאברי מטרה, אינה מצריכה הפנייה למיון ויש לטפל בה אמבולטורית כדי להימנע מהורדה מסוכנת של הל"ד.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">מצבי חירום (Hypertensive Emergency):</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>הגדרה:</strong> עליית ל"ד חדה המלווה בסימנים לפגיעה אקוטית באיברי מטרה (כאב חזה, קוצר נשימה, אי ספיקת לב חדה, חסר נוירולוגי או דיסקציה של אבי העורקים).</li>
+                            <li><strong>ניהול:</strong> דורש אשפוז (לרוב בטיפול נמרץ) ומתן תרופות להורדת לחץ דם במתן תוך-ורידי (IV) מבוקר ורציף.</li>
+                            <li><strong>קצב ההורדה:</strong> ההורדה חייבת להיות מדורגת ומבוקרת (למעט במקרים של דיסקציה) על מנת למנוע החמרה של איסכמיה באברי המטרה. יעדי ההורדה מותאמים לפתולוגיה הספציפית המוצגת.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 20, 
+                title: "יתר לחץ דם בסוכרת", 
+                page: 197,
+                pageDisplay: "197-206",
+                pdfFile: "יתר ל.ד. פרק 20 - יתר ל.ד.. בסוכרת, עמ'197-206.pdf",
+                summary: `
+                    <p class="mb-3">🩸 <strong>הצטלבות של מגיפות (Diabesity):</strong> מעל 80% מהמבוגרים המאובחנים עם סוכרת סוג 2 סובלים גם מיתר לחץ דם. שילוב זה מאיץ באופן דרמטי את התפתחותם של סיבוכים קרדיווסקולריים (התקפי לב ושבץ) ופגיעה כלייתית עד לאי-ספיקת כליות סופנית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">גישה טיפולית משולבת:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>יעדים מחמירים:</strong> השאיפה בחולי סוכרת היא להגיע באופן מוקפד ליעד של < 130/80 ממ"כ.</li>
+                            <li><strong>תרופות מועדפות (Nephroprotection):</strong> חובה להשתמש במעכבי מערכת הרנין-אנגיוטנסין (ACEi או ARB) במיוחד בנוכחות אלבומינוריה, כדי להגן על הכליות.</li>
+                            <li><strong>שילוב עם תרופות סוכרת מודרניות:</strong> טיפול בתרופות ממשפחת מעכבי SGLT-2 או אגוניסטים ל-GLP-1 מומלץ לא רק להורדת הסוכר, אלא בשל הוכחתן במחקרים כמשפרות תמותה קרדיווסקולרית ומורידות לחץ דם באופן אקטיבי.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 21, 
+                title: "השפעת מחלת ההשמנה והטיפול בה על יתר לחץ דם", 
+                page: 207,
+                pageDisplay: "207-213",
+                pdfFile: "יתר ל.ד. פרק 21, עמ'207-213.pdf",
+                summary: `
+                    <p class="mb-3">⚖️ <strong>גורם מרכזי ומחולל מחלה:</strong> השמנה, ובמיוחד השמנה בטנית, היא גורם סיכון עיקרי להתפתחות יתר לחץ דם עקב מנגנונים של תנגודת לאינסולין, דלקת כרונית, הפעלת יתר של המערכת הסימפתטית, ודום נשימה בשינה.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">גישה טיפולית מתקדמת:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>הורדת משקל:</strong> ירידה מבוקרת במשקל מהווה קו טיפולי הכרחי ויעיל במיוחד להורדת לחץ הדם.</li>
+                            <li><strong>דור חדש של תרופות:</strong> הקווים המנחים שמים דגש על התרופות החדשות למחלת ההשמנה (הדור של Semaglutide ו-Tirzepatide). תרופות אלו הוכחו לא רק כמפחיתות משקל דרמטית, אלא גם כתורמות באופן משמעותי להפחתת לחץ הדם ולהפחתת הסיכון הקרדיווסקולרי הכולל בקרב המטופלים.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 22, 
+                title: "לחץ דם והמוח", 
+                page: 214,
+                pageDisplay: "214-217",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🧠 <strong>המוח כאיבר מטרה:</strong> יתר לחץ דם הוא גורם הסיכון ההפיך המשמעותי ביותר לשבץ מוחי (איסכמי והמורגי) וכן לירידה קוגניטיבית ודמנציה וסקולרית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">דגשים קליניים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>בשלב האקוטי של שבץ איסכמי:</strong> אין להוריד ל"ד באופן שגרתי, אלא אם הוא מעל 220/120 (או >185/110 למיועדים לטיפול טרומבוליטי).</li>
+                            <li><strong>מניעה שניונית:</strong> לאחר התייצבות (בד"כ מספר ימים מהשבץ), היעד הוא מתחת ל-130/80 ממ"כ להפחתת אירועים חוזרים.</li>
+                            <li><strong>דמנציה:</strong> איזון יל"ד באמצע החיים מפחית משמעותית את הסיכון להתפתחות דמנציה בגיל המבוגר.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 23, 
+                title: "יתר לחץ דם, הלב וכלי הדם", 
+                page: 218,
+                pageDisplay: "218-227",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🫀 <strong>קשר ישיר לתחלואה קרדיווסקולרית:</strong> יל"ד כרוני גורם לעיבוי שריר הלב (LVH), מחלת לב כלילית, אי ספיקת לב ופרפור עליות.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">הנחיות טיפול מרכזיות:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>מחלת לב כלילית (CAD):</strong> יעד מטרה <130/80 (ולא פחות מ-120/70). חסמי בטא ו-CCB הם קו ראשון להקלה על תעוקה.</li>
+                            <li><strong>אי ספיקת לב (HFrEF):</strong> טיפול מבוסס על "ארבעת עמודי התווך": ARNI/ACEi, חסמי בטא, MRA ו-SGLT2i. חסמי תעלות סידן מקבוצת NDHP (כמו ורפמיל) אסורים ב-HFrEF.</li>
+                            <li><strong>פרפור עליות:</strong> איזון ל"ד הכרחי למניעת אירועים מוחיים ולשיפור יעילות תרופות נוגדות קרישה. אק"ג שגרתי נדרש לזיהוי מוקדם של פרפור עליות ו-LVH.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 24, 
+                title: "השפעות סביבתיות ותעסוקתיות על לחץ דם", 
+                page: 228,
+                pageDisplay: "228-235",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🏭 <strong>הסביבה והבריאות:</strong> גורמים סביבתיים ותעסוקתיים מוכרים כיום כמשפיעים ישירים על עלייה בלחץ הדם ועל סיכון מוגבר לתחלואה קרדיווסקולרית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">גורמי סיכון בולטים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>זיהום אוויר (PM2.5) ורעש סביבתי:</strong> קשורים באופן עצמאי לעלייה בלחץ דם, בעיקר עקב הפעלת המערכת הסימפתטית ועקה חמצונית.</li>
+                            <li><strong>מתח תעסוקתי (Job Strain):</strong> שילוב של דרישות בעבודה גבוהות עם שליטה נמוכה קשור בעלייה של עד 20% בסיכון ליל"ד.</li>
+                            <li><strong>טמפרטורה ואקלים:</strong> לחץ הדם נוטה להיות גבוה יותר בחורף, ותיתכן דרישה להתאמת מינוני תרופות בעונות השנה הקיצוניות או בעת מעבר לגובה רב.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 25, 
+                title: "טכנולוגיות חדשות לאבחון וטיפול ביתר לחץ דם", 
+                page: 236,
+                pageDisplay: "236-244",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">📱 <strong>חדשנות ברפואה:</strong> שילוב טכנולוגיות חדשות משפר את יכולת האבחון, הניטור וההיענות לטיפול ביתר לחץ דם.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">אמצעים והתערבויות:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>מכשור לביש (Wearables) ומדידה ללא שרוול (Cuffless):</strong> טכנולוגיות בהתהוות. כיום, יש לוודא שהמכשיר עבר ולידציה קלינית (תיקוף) לפני הסתמכות עליו לקבלת החלטות.</li>
+                            <li><strong>רפואה מרחוק (Telemedicine):</strong> תקשורת דיגיטלית וניטור מרחוק משפרים את אחוזי האיזון ומקטינים את האינרציה הטיפולית.</li>
+                            <li><strong>דנרווציה של עורקי הכליה (Renal Denervation):</strong> פעולה זעיר-פולשנית שנכנסת בהדרגה לארסנל הטיפולי (לרוב למטופלים עם יל"ד עמיד או חוסר סבילות לתרופות).</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 26, 
+                title: "יתר לחץ דם בהיריון", 
+                page: 245,
+                pageDisplay: "245-251",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🤰 <strong>היריון בסיכון:</strong> הפרעות לחץ דם בהיריון הן גורם מוביל לתחלואה ותמותה אימהית ועוברית, ודורשות מעקב מולטי-דיסציפלינרי.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">סיווג וטיפול:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>סיווג:</strong> יל"ד כרוני (טרום היריון/עד שבוע 20), יל"ד היריוני (לאחר שבוע 20), ורעלת היריון (Preeclampsia - המערבת פגיעה רב-מערכתית כגון פרוטאינוריה).</li>
+                            <li><strong>סף טיפול ויעד:</strong> מומלץ להתחיל טיפול בערכים מעל 140/90. יעד המטרה סביב 135/85 ממ"כ.</li>
+                            <li><strong>תרופות מותרות:</strong> לבטלול (Labetalol), מתילדופה (Methyldopa) וניפדיפין (Nifedipine).</li>
+                            <li><strong class="text-red-400">תרופות התווית נגד:</strong> ACEi, ARB ו-MRA אסורות לחלוטין (טרטוגניות לעובר). מניעה ע"י אספירין במינון נמוך לנשים בסיכון.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 27, 
+                title: "יתר לחץ דם בנשים", 
+                page: 252,
+                pageDisplay: "252-254",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">👩 <strong>רפואת מגדר:</strong> המסלול הקליני של לחץ הדם בנשים שונה מזה של גברים, ומושפע מאירועים הורמונליים לאורך החיים (היריון, גלולות, מנופאוזה).</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">דגשים ייחודיים לנשים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>אמצעי מניעה:</strong> גלולות משולבות (אסטרוגן-פרוגסטרון) עשויות להעלות לחץ דם ב-5% מהמשתמשות. יש לנטר ל"ד, ובמקרה של עלייה לשקול חלופות (כמו גלולות פרוגסטרון בלבד או התקן).</li>
+                            <li><strong>גיל המעבר (מנופאוזה):</strong> אובדן ההגנה האסטרוגנית מלווה בעלייה תלולה של לחץ הדם (לעתים יל"ד סיסטולי מבודד) וברגישות מוגברת למלח.</li>
+                            <li><strong>טיפול הורמונלי חלופי (HRT):</strong> במינונים המקובלים כיום אינו מהווה התווית נגד בנשים עם יל"ד מאוזן היטב, אך מחייב מעקב.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 28, 
+                title: "יתר לחץ דם ומחלות ממאירות", 
+                page: 255,
+                pageDisplay: "255-262",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🎗️ <strong>קרדיו-אונקולוגיה:</strong> עלייה בשרידות ממחלות ממאירות חושפת את הקשר ההדוק בין טיפולים אנטי-סרטניים להתפתחות יתר לחץ דם ותחלואה לבבית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">הנחיות לניהול מטופלים אונקולוגיים:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>תרופות אונקולוגיות מעלות ל"ד:</strong> שכיח במיוחד בטיפולים ביולוגיים כמו מעכבי VEGF (למשל בוואציזומאב) ומעכבי טירוזין קינאז (TKI), עקב פגיעה ישירה במסלולי תחמוצת החנקן (NO) באנדותל.</li>
+                            <li><strong>הערכת בסיס וניטור:</strong> חובה לבצע הערכת ל"ד קפדנית לפני התחלת טיפולים אלו ולנטר מקרוב במהלך הטיפול.</li>
+                            <li><strong>עקרונות הטיפול:</strong> יש לאזן את הל"ד ללא הפסקת הטיפול האונקולוגי ככל הניתן. התרופות המועדפות כקו ראשון הן ACEi/ARB או חסמי תעלות סידן (CCB) מסוג דיהידרופירידינים. יש להיזהר מאינטראקציות של NDHP עם תרופות כימותרפיות.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 29, 
+                title: "עקה, חרדה ויתר לחץ דם", 
+                page: 263,
+                pageDisplay: "263-276",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">🧠 <strong>גוף ונפש:</strong> מתח נפשי כרוני, חרדה וטראומה מפעילים בצורה מתמשכת את המערכת הסימפתטית וציר ה-HPA, ומהווים גורמי סיכון משמעותיים לעלייה קבועה בלחץ הדם.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">מצבים פסיכולוגיים והשפעתם:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>פוסט-טראומה (PTSD):</strong> קשורה לעלייה מובהקת בסיכון ליל"ד ותחלואה קרדיווסקולרית. דורשת סקירה אקטיבית וטיפול הוליסטי.</li>
+                            <li><strong>חרדה ויל"ד התקפי:</strong> התקפי פאניקה עלולים לדמות פאוכרומוציטומה עם זינוקים בל"ד ("תנודות ל"ד"). לרוב הטיפול היעיל הוא בחרדה עצמה (SSRI/CBT) ולא העלאת תרופות להורדת ל"ד.</li>
+                            <li><strong>טיפולים לא-תרופתיים:</strong> טכניקות הרפיה, מדיטציה, יוגה, ונשימות עמוקות נמצאו בעלות אפקט מוכח ומומלצות כטיפול משלים ליל"ד הנגרם ממתח.</li>
+                        </ul>
+                    </div>
+                ` 
+            },
+            { 
+                id: 30, 
+                title: "תת לחץ דם", 
+                page: 277,
+                pageDisplay: "277-288",
+                pdfFile: "htn_guidelines_2026.pdf.pdf", 
+                summary: `
+                    <p class="mb-3">📉 <strong>תת-לחץ דם (Hypotension):</strong> מצב שכיח בעיקר באוכלוסייה המבוגרת, הקשור לנפילות, תחלואה נוירולוגית, ואף תמותה. מחייב התייחסות רפואית דקדקנית.</p>
+                    <div class="bg-black/30 p-3.5 rounded-xl border border-white/20 mb-3 shadow-inner">
+                        <p class="font-bold text-sky-300 mb-1.5 text-xs">הגדרות וניהול קליני:</p>
+                        <ul class="list-disc list-inside text-white space-y-1 text-xs">
+                            <li><strong>תת-לחץ דם אורתוסטטי:</strong> ירידה של >20 ממ"כ סיסטולי או >10 ממ"כ דיאסטולי (או ירידה ל-<90 ממ"כ סיסטולי) במעבר משכיבה לעמידה (בתוך 3 דקות).</li>
+                            <li><strong>גורמים מרכזיים:</strong> טיפול תרופתי עודף (Polypharmacy), התייבשות, פגיעה אוטונומית (סוכרת, פרקינסון) ותת-ל"ד לאחר ארוחה (Postprandial).</li>
+                            <li><strong>גישה טיפולית:</strong> הסרת תרופות פוגעות, עידוד שתייה נאותה וצריכת מלח מספקת, התרוממות הדרגתית, גרביים אלסטיות, ובמקרים קשים טיפול פרמקולוגי ייעודי (כגון מידודרין או פלודרוקורטיזון).</li>
                         </ul>
                     </div>
                 ` 
             }
         ];
 
-        function renderToC(dataToRender) {
-            const grid = document.getElementById('toc-grid');
+        function renderToC(dataToRender, containerId) {
+            const grid = document.getElementById(containerId);
             if (!grid) return;
             let html = '';
             
             if (dataToRender.length === 0) {
-                html = '<div class="col-span-2 text-center text-white/70 py-6 text-sm">לא נמצאו פרקים התואמים לחיפוש שלך.</div>';
+                html = '<div class="col-span-full text-center text-white/70 py-6 text-sm">לא נמצאו פרקים התואמים לחיפוש שלך.</div>';
             } else {
                 dataToRender.forEach(ch => {
                     html += `
-                    <div onclick="openChapterSummary(${ch.id})" class="purple-glass p-4 rounded-[1.5rem] cursor-pointer flex flex-col items-start gap-4 group hover:scale-[1.03]">
-                        <div class="relative z-10 w-12 h-12 rounded-xl bg-white/10 border-2 border-white/50 flex items-center justify-center text-white group-hover:bg-white/20 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] transition-all duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ch.icon}</svg>
-                        </div>
-                        <div class="w-full">
-                            <span class="text-[10px] text-white font-extrabold uppercase block mb-1 drop-shadow-md">פרק ${ch.id}</span>
-                            <h4 class="text-[13px] font-bold text-white leading-tight drop-shadow-md">${ch.title}</h4>
+                    <div onclick="openChapterSummary(${ch.id})" class="purple-glass p-3 rounded-[1rem] cursor-pointer flex flex-col items-start gap-2 group hover:scale-[1.02] mb-2">
+                        <div class="flex items-center gap-3 w-full">
+                            <div class="relative z-10 w-8 h-8 rounded-lg bg-white/10 border border-white/50 flex items-center justify-center text-white shrink-0 group-hover:bg-white/20 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all duration-300">
+                                <span class="text-sm font-black">${ch.id}</span>
+                            </div>
+                            <div class="w-full">
+                                <h4 class="text-[11px] font-bold text-white leading-tight drop-shadow-md line-clamp-2">${ch.title}</h4>
+                            </div>
                         </div>
                     </div>
                     `;
@@ -620,20 +1042,29 @@
         }
 
         function initToC() {
-            renderToC(chaptersData);
+            // Render mobile grid
+            renderToC(chaptersData, 'toc-grid-mobile');
+            // Render desktop sidebar
+            renderToC(chaptersData, 'sidebar-toc');
             
-            const searchInput = document.getElementById('search-input');
-            if(searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const searchTerm = e.target.value.toLowerCase().trim();
-                    const filteredChapters = chaptersData.filter(ch => 
-                        ch.title.toLowerCase().includes(searchTerm) || 
-                        ch.summary.toLowerCase().includes(searchTerm) ||
-                        ("פרק " + ch.id).includes(searchTerm)
-                    );
-                    renderToC(filteredChapters);
-                });
-            }
+            // Search functionality setup
+            const setupSearch = (inputId, targetContainer) => {
+                const searchInput = document.getElementById(inputId);
+                if(searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        const searchTerm = e.target.value.toLowerCase().trim();
+                        const filteredChapters = chaptersData.filter(ch => 
+                            ch.title.toLowerCase().includes(searchTerm) || 
+                            ch.summary.toLowerCase().includes(searchTerm) ||
+                            ("פרק " + ch.id).includes(searchTerm)
+                        );
+                        renderToC(filteredChapters, targetContainer);
+                    });
+                }
+            };
+            
+            setupSearch('search-input-mobile', 'toc-grid-mobile');
+            setupSearch('search-input-sidebar', 'sidebar-toc');
         }
 
         window.addEventListener('DOMContentLoaded', initToC);
@@ -652,21 +1083,21 @@
             if (title) title.innerText = chapter.title;
             
             const iconContainer = document.getElementById('summary-icon');
-            if (iconContainer) iconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">${chapter.icon}</svg>`;
+            if (iconContainer) iconContainer.innerHTML = `<span class="text-3xl font-black text-white">${chapter.id}</span>`;
             
             const content = document.getElementById('summary-content');
             if (content) content.innerHTML = chapter.summary;
 
             const links = document.getElementById('summary-links');
             if (links) {
-                let pdfLinkUrl = "htn_guidelines_2026.pdf.pdf";
+                // הבטחה שקובץ ברירת מחדל ישמש במידה ולא הוגדר קובץ ספציפי
+                let pdfLinkUrl = chapter.pdfFile ? chapter.pdfFile : "htn_guidelines_2026.pdf.pdf";
                 
-                // For Chapter 1, set the specific URL fragment to open on page 5
-                if (chapter.id === 1) {
-                    pdfLinkUrl += "#page=5";
-                } else {
-                    pdfLinkUrl += "#page=" + chapter.page;
-                }
+                // חיבור מספר העמוד לקישור ה-PDF באופן דינמי
+                pdfLinkUrl += "#page=" + chapter.page;
+
+                // טקסט תצוגת העמוד בכפתור
+                let pageText = chapter.pageDisplay ? chapter.pageDisplay : chapter.page;
 
                 links.innerHTML = `
                     <a href="${pdfLinkUrl}" target="_blank" class="w-full purple-glass text-white py-3.5 px-4 rounded-2xl transition-all flex justify-between items-center group">
@@ -677,7 +1108,7 @@
                             <span class="text-sm font-bold">מעבר למסמך הרשמי</span>
                         </span>
                         <span class="text-[11px] bg-white/10 text-white px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 border border-white/30">
-                            עמ' ${chapter.page}
+                            עמ' ${pageText}
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                         </span>
                     </a>
@@ -741,30 +1172,6 @@
         }
 
         function goHome() { openScreen('screen-home'); }
-
-        function openPdfModalView(url) {
-            const modal = document.getElementById('pdf-modal-container');
-            const iframe = document.getElementById('pdf-iframe');
-            
-            if (iframe) iframe.src = url;
-            
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        }
-
-        function closePdfModalView() {
-            const modal = document.getElementById('pdf-modal-container');
-            const iframe = document.getElementById('pdf-iframe');
-
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-
-            if (iframe) iframe.src = '';
-        }
 
         function sendChatMessage() {
             const input = document.getElementById('chat-input');
